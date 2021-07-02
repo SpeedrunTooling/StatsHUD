@@ -171,6 +171,62 @@ function RECStats(data) {
 	</div>`;
 }
 
+// RESIDENT EVIL 4
+function RE4HPLeon(data) {
+	let mainContainer = document.getElementById("srtQueryData");
+	var hitPercent = (data.PlayerCurrentHealth / data.PlayerMaxHealth) * 100;
+	playerName = "Leon: ";
+	if (hitPercent > 66) {
+		mainContainer.innerHTML += `<div class="hp"><div class="hpbar fine" style="width:${hitPercent}%">
+				<div id="currenthp">${playerName}${data.PlayerCurrentHealth} / ${data.PlayerMaxHealth}</div><div class="green" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
+	}
+	else if (hitPercent <= 66 && hitPercent > 33) {
+		mainContainer.innerHTML += `<div class="hp"><div class="hpbar caution" style="width:${hitPercent}%">
+				<div id="currenthp">${playerName}${data.PlayerCurrentHealth} / ${data.PlayerMaxHealth}</div><div class="yellow" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
+	}
+	else if (hitPercent <= 33 && hitPercent > 0){
+		mainContainer.innerHTML += `<div class="hp"><div class="hpbar danger" style="width:${hitPercent}%">
+				<div id="currenthp">${playerName}${data.PlayerCurrentHealth} / ${data.PlayerMaxHealth}</div><div class="red" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
+	}
+	else {
+		mainContainer.innerHTML += `<div class="hp"><div class="hpbar dead" style="width:${100}%">
+				<div id="currenthp">${playerName}${data.PlayerCurrentHealth} / ${data.PlayerMaxHealth}</div><div class="grey" id="percenthp">${0}%</div></div></div>`;
+	}
+}
+
+function RE4HPAshley(data) {
+	let mainContainer = document.getElementById("srtQueryData");
+	var hitPercent = (data.PlayerCurrentHealth2 / data.PlayerMaxHealth2) * 100;
+	playerName = "Ashley: ";
+	if (hitPercent > 66) {
+		mainContainer.innerHTML += `<div class="hp"><div class="hpbar fine" style="width:${hitPercent}%">
+				<div id="currenthp">${playerName}${data.PlayerCurrentHealth2} / ${data.PlayerMaxHealth2}</div><div class="green" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
+	}
+	else if (hitPercent <= 66 && hitPercent > 33) {
+		mainContainer.innerHTML += `<div class="hp"><div class="hpbar caution" style="width:${hitPercent}%">
+				<div id="currenthp">${playerName}${data.PlayerCurrentHealth2} / ${data.PlayerMaxHealth2}</div><div class="yellow" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
+	}
+	else if (hitPercent <= 33 && hitPercent > 0){
+		mainContainer.innerHTML += `<div class="hp"><div class="hpbar danger" style="width:${hitPercent}%">
+				<div id="currenthp">${playerName}${data.PlayerCurrentHealth2} / ${data.PlayerMaxHealth2}</div><div class="red" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
+	}
+	else {
+		mainContainer.innerHTML += `<div class="hp"><div class="hpbar dead" style="width:${100}%">
+				<div id="currenthp">${playerName}${data.PlayerCurrentHealth2} / ${data.PlayerMaxHealth2}</div><div class="grey" id="percenthp">${0}%</div></div></div>`;
+	}
+}
+
+function RE4Stats(data) {
+	if (HideMoney) { return; }
+	let mainContainer = document.getElementById("srtQueryData");
+	let statHTML = "";
+	if (!HideMoney)
+	{
+		statHTML += `<div class="title">PTAS: <font color="#00FF00">${"₧ " + data.Money}</font></div>`
+	}
+	mainContainer.innerHTML += `<div id="da">${statHTML}</div>`;
+}
+
 //Resident Evil 5
 function RE5HP(current, max, playerName) {
 	let mainContainer = document.getElementById("srtQueryData");
@@ -568,6 +624,11 @@ function appendData(data) {
 			REEngineHP(data);
 			REEngineStats(data);
 			EnemyHPBars(data);
+			return;
+		case "RE4":
+			RE4HPLeon(data);
+			RE4HPAshley(data);
+			RE4Stats(data);
 			return;
 		case "RE5":
 			if (!IsSeparated)
