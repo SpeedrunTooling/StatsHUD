@@ -10,10 +10,17 @@ var HideEnemies = false;
 
 var IsSeparated = false;
 var IsPlayer2 = false;
+var IsDebug = false;
 
 window.onload = function () {
 	const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);
+
+	// HIDE DEBUG INFO
+	const debug = urlParams.get('debug');
+	if (debug != null) {
+		IsDebug = true;
+	}
 
 	// HIDE IN-GAME TIMER
 	const igt = urlParams.get('hideigt');
@@ -50,6 +57,19 @@ window.onload = function () {
 		IsPlayer2 = true;
 	}
 
+	// SHOW BOSS ONLY
+	const boss = urlParams.get('bossonly');
+	if (boss != null) {
+		ShowBossOnly = true;
+	}
+
+	// HIDE ALL ENEMIES
+	const enemies = urlParams.get('hideenemies');
+	if (enemies != null) {
+		HideEnemies = true;
+	}
+
+	//
 	// CHECK FOR AUTH TOKEN
 	const token = urlParams.get('token');
 	if (token != null) {
