@@ -651,6 +651,22 @@ function appendData(data) {
 				EnemyHPBars(data);
 			}
 			return;
+		case "RE6":
+			if (!IsSeparated)
+			{
+				RE5HP(data.PlayerCurrentHealth, data.PlayerMaxHealth, "P1: ");
+				RE5HP(data.PlayerCurrentHealth2, data.PlayerMaxHealth2, "P2: ");
+			}
+			else 
+			{
+				if (IsPlayer2) 
+				{
+					RE5HP(data.PlayerCurrentHealth2, data.PlayerMaxHealth2, "P2: ");
+					return;
+				}
+				RE5HP(data.PlayerCurrentHealth, data.PlayerMaxHealth, "P1: ");
+			}
+			return;
 		case "RE7":
 			REEngineHP(data);
 			REEngineStats(data);
