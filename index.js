@@ -12,9 +12,17 @@ var IsSeparated = false;
 var IsPlayer2 = false;
 var IsDebug = false;
 
+var CurrentPlayerID = "0";
+
 window.onload = function () {
 	const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);
+
+	// RE6 Player Name INFO
+	const name = urlParams.get('name');
+	if (name != null) {
+		CurrentPlayerID = name;
+	}
 
 	// HIDE DEBUG INFO
 	const debug = urlParams.get('debug');
@@ -453,6 +461,55 @@ function GetSRank(chapter, enemiesHit, shotsFired, kills, deaths, time){
 	}
 }
 
+// RESIDENT EVIL 6
+function RE6HP(current, max, playerName) {
+	let mainContainer = document.getElementById("srtQueryData");
+	var hitPercent = (current / max) * 100;
+	if (hitPercent > 66) {
+		mainContainer.innerHTML += `<div class="hp"><div class="hpbar fine" style="width:${hitPercent}%">
+				<div id="currenthp">${playerName}${current} / ${max}</div><div class="green" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
+	}
+	else if (hitPercent <= 66 && hitPercent > 33) {
+		mainContainer.innerHTML += `<div class="hp"><div class="hpbar caution" style="width:${hitPercent}%">
+				<div id="currenthp">${playerName}${current} / ${max}</div><div class="yellow" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
+	}
+	else if (hitPercent <= 33 && hitPercent > 0){
+		mainContainer.innerHTML += `<div class="hp"><div class="hpbar danger" style="width:${hitPercent}%">
+				<div id="currenthp">${playerName}${current} / ${max}</div><div class="red" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
+	}
+	else {
+		mainContainer.innerHTML += `<div class="hp"><div class="hpbar dead" style="width:${100}%">
+				<div id="currenthp">${playerName}${current} / ${max}</div><div class="grey" id="percenthp">${0}%</div></div></div>`;
+	}
+}
+
+function RE6GetName() {
+	switch (CurrentPlayerID) {
+		case "1":
+			return "Helena: ";
+		case "2":
+			return "Chris: ";
+		case "3":
+			return "Piers: ";
+		case "4":
+			return "Jake: ";
+		case "5":
+			return "Sherry: ";
+		case "6":
+			return "Ada: ";
+		case "7":
+			return "Agent: ";
+		default:
+			return "Leon: ";
+	}
+}
+
+function RE6Stats(da) {
+	if (HideDA) { return; }
+	let mainContainer = document.getElementById("srtQueryData");
+	mainContainer.innerHTML += `<div id="da"><div class="title">DA Score: <font color="#00FF00">${da}</font></div></div>`;
+}
+
 // RESIDENT EVIL ENGINE TITLES
 function REEngineHP(data) {
 	let mainContainer = document.getElementById("srtQueryData");
@@ -652,19 +709,53 @@ function appendData(data) {
 			}
 			return;
 		case "RE6":
-			if (!IsSeparated)
+			if (CurrentPlayerID == "0")
 			{
-				RE5HP(data.PlayerCurrentHealth, data.PlayerMaxHealth, "P1: ");
-				RE5HP(data.PlayerCurrentHealth2, data.PlayerMaxHealth2, "P2: ");
+				RE6HP(data.LeonCurrentHealth, data.LeonMaxHealth, RE6GetName());
+				RE6Stats(data.LeonDA);
+				return;
 			}
-			else 
+			else if (CurrentPlayerID == "1")
 			{
-				if (IsPlayer2) 
-				{
-					RE5HP(data.PlayerCurrentHealth2, data.PlayerMaxHealth2, "P2: ");
-					return;
-				}
-				RE5HP(data.PlayerCurrentHealth, data.PlayerMaxHealth, "P1: ");
+				RE6HP(data.HelenaCurrentHealth, data.HelenaMaxHealth, RE6GetName());
+				RE6Stats(data.HelenaDA);
+				return;
+			}
+			else if (CurrentPlayerID == "2")
+			{
+				RE6HP(data.ChrisCurrentHealth, data.ChrisMaxHealth, RE6GetName());
+				RE6Stats(data.ChrisDA);
+				return;
+			}
+			else if (CurrentPlayerID == "3")
+			{
+				RE6HP(data.PiersCurrentHealth, data.PiersMaxHealth, RE6GetName());
+				RE6Stats(data.PiersDA);
+				return;
+			}
+			else if (CurrentPlayerID == "4")
+			{
+				RE6HP(data.JakeCurrentHealth, data.JakeMaxHealth, RE6GetName());
+				RE6Stats(data.JakeDA);
+				return;
+			}
+			else if (CurrentPlayerID == "5")
+			{
+				RE6HP(data.SherryCurrentHealth, data.SherryMaxHealth, RE6GetName());
+				RE6Stats(data.SherryDA);
+				return;
+			}
+			else if (CurrentPlayerID == "6")
+			{
+				RE6HP(data.AdaCurrentHealth, data.AdaMaxHealth, RE6GetName());
+				RE6Stats(data.AdaDA);
+				return;
+			}
+			else if (CurrentPlayerID == "7")
+			{
+				RE6HP(data.AgentCurrentHealth, data.AgentMaxHealth, RE6GetName());
+				RE6Stats(data.AgentDA);
+				return;
 			}
 			return;
 		case "RE7":
