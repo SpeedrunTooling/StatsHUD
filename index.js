@@ -104,6 +104,23 @@ var Desc = function (a, b) {
 	return 0;
 };
 
+// RESIDENT EVIL 0 REMAKE
+function RE0Stats(data) {
+	if (HideIGT)
+	{
+		return;
+	}
+	let mainContainer = document.getElementById("srtQueryData");
+	mainContainer.innerHTML += `
+	<div id="da">
+		<div class="title">IGT: <font color="#00FF00">${data.IGTFormattedString}</font></div>
+		<div class="title">Saves: <font color="#00FF00">${data.Stats.Saves}</font></div>
+		<div class="title">Kills: <font color="#00FF00">${data.Stats.Kills}</font></div>
+		<div class="title">Shots: <font color="#00FF00">${data.Stats.Shots}</font></div>
+		<div class="title">Recoveries: <font color="#00FF00">${data.Stats.Recoveries}</font></div>
+	</div>`;
+}
+
 // RESIDENT EVIL CLASSIC TITLES
 function RECHP(data) {
 	let mainContainer = document.getElementById("srtQueryData");
@@ -653,6 +670,11 @@ function appendData(data) {
 
 	switch (data.GameName)
 	{
+		case "RE0":
+			RE5HP(data.PlayerCurrentHealth, data.PlayerMaxHealth, "Rebecca: ");
+			RE5HP(data.PlayerCurrentHealth2, data.PlayerMaxHealth2, "Billy: ");
+			RE0Stats(data);
+			return;
 		case "RE1":
 			RECHP(data);
 			RECStats(data);
