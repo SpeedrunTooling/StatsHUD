@@ -660,7 +660,7 @@ let mainContainer = document.getElementById("srtQueryData");
 			<div class="hp">
 				<div class="hpbar gassed" style="width:${hitPercent}%">
 					<div id="currenthp">
-						<div style="font-size: 24px">${playerName}${data.Player.CurrentHP} / ${data.Player.MaximumHP}</div>
+						<div style="font-size: 24px">${playerName}: ${data.Player.CurrentHP} / ${data.Player.MaximumHP}</div>
 						<div class="pink" id="percenthp">${hitPercent.toFixed(1)}%</div>
 					</div>
 				</div>
@@ -671,7 +671,7 @@ let mainContainer = document.getElementById("srtQueryData");
 			<div class="hp">
 				<div class="hpbar poison" style="width:${hitPercent}%">
 					<div id="currenthp">
-						<div style="font-size: 24px">${playerName}${data.Player.CurrentHP} / ${data.Player.MaximumHP}</div>
+						<div style="font-size: 24px">${playerName}: ${data.Player.CurrentHP} / ${data.Player.MaximumHP}</div>
 						<div class="purple" id="percenthp">${hitPercent.toFixed(1)}%</div>
 					</div>
 				</div>
@@ -682,7 +682,7 @@ let mainContainer = document.getElementById("srtQueryData");
 			<div class="hp">
 				<div class="hpbar fine" style="width:${hitPercent}%">
 					<div id="currenthp">
-						<div style="font-size: 24px">${playerName}${data.Player.CurrentHP} / ${data.Player.MaximumHP}</div>
+						<div style="font-size: 24px">${playerName}: ${data.Player.CurrentHP} / ${data.Player.MaximumHP}</div>
 						<div class="green" id="percenthp">${hitPercent.toFixed(1)}%</div>
 					</div>
 				</div>
@@ -693,7 +693,7 @@ let mainContainer = document.getElementById("srtQueryData");
 			<div class="hp">
 				<div class="hpbar fineToo" style="width:${hitPercent}%">
 					<div id="currenthp">
-						<div style="font-size: 24px">${playerName}${data.Player.CurrentHP} / ${data.PlayerMaxHealth}</div>
+						<div style="font-size: 24px">${playerName}: ${data.Player.CurrentHP} / ${data.PlayerMaxHealth}</div>
 						<div class="yellow" id="percenthp">${hitPercent.toFixed(1)}%</div>
 					</div>
 				</div>
@@ -704,7 +704,7 @@ let mainContainer = document.getElementById("srtQueryData");
 			<div class="hp">
 				<div class="hpbar caution" style="width:${hitPercent}%">
 					<div id="currenthp">
-						<div style="font-size: 24px">${playerName}${data.Player.CurrentHP} / ${data.Player.MaximumHP}</div>
+						<div style="font-size: 24px">${playerName}: ${data.Player.CurrentHP} / ${data.Player.MaximumHP}</div>
 						<div class="orange" id="percenthp">${hitPercent.toFixed(1)}%</div>
 					</div>
 				</div>
@@ -715,7 +715,7 @@ let mainContainer = document.getElementById("srtQueryData");
 			<div class="hp">
 				<div class="hpbar danger" style="width:${hitPercent}%">
 					<div id="currenthp">
-						<div style="font-size: 24px">${playerName}${data.Player.CurrentHP} / ${data.Player.MaximumHP}</div>
+						<div style="font-size: 24px">${playerName}: ${data.Player.CurrentHP} / ${data.Player.MaximumHP}</div>
 						<div class="red" id="percenthp">${hitPercent.toFixed(1)}%</div>
 					</div>
 				</div>
@@ -726,7 +726,7 @@ let mainContainer = document.getElementById("srtQueryData");
 			<div class="hp">
 				<div class="hpbar dead" style="width:${hitPercent}%">
 					<div id="currenthp">
-						<div style="font-size: 24px">${playerName}0 / ${data.Player.MaximumHP}</div>
+						<div style="font-size: 24px">${playerName}: 0 / ${data.Player.MaximumHP}</div>
 						<div class="grey" id="percenthp">${hitPercent.toFixed(1)}%</div>
 					</div>
 				</div>
