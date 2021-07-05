@@ -198,7 +198,6 @@ function RECStats(data) {
 
 // RESIDENT EVIL 4
 function RE4HP(current, max, name) {
-	console.log("Hello");
 	let mainContainer = document.getElementById("srtQueryData");
 	var hitPercent = (current / max) * 100;
 	if (hitPercent > 66) {
@@ -220,7 +219,6 @@ function RE4HP(current, max, name) {
 }
 
 function RE4Stats(data) {
-	console.log("World");
 	if (HideIGT && HideMoney && HideDA) { return; }
 	let mainContainer = document.getElementById("srtQueryData");
 	let statHTML = "";
@@ -651,6 +649,132 @@ function NemesisHPClassic(data) {
 	}
 }
 
+// RESIDENT EVIL: CODE VERONICA X
+function RECVXHP(data) {
+let mainContainer = document.getElementById("srtQueryData");
+	var hitPercent = (data.Player.CurrentHP / data.Player.MaximumHP) * 100;
+	var playerName = data.Player.CharacterFirstName;
+	// Player HP
+	if (data.Player.IsGassed) {
+		mainContainer.innerHTML += `
+			<div class="hp">
+				<div class="hpbar gassed" style="width:${hitPercent}%">
+					<div id="currenthp">
+						<div style="font-size: 24px">${playerName}${data.PlayerCurrentHealth} / ${data.PlayerMaxHealth}</div>
+						<div class="pink" id="percenthp">${hitPercent.toFixed(1)}%</div>
+					</div>
+				</div>
+			</div>`;
+	}
+	else if (data.Player.IsPoison) {
+		mainContainer.innerHTML += `
+			<div class="hp">
+				<div class="hpbar poison" style="width:${hitPercent}%">
+					<div id="currenthp">
+						<div style="font-size: 24px">${playerName}${data.PlayerCurrentHealth} / ${data.PlayerMaxHealth}</div>
+						<div class="purple" id="percenthp">${hitPercent.toFixed(1)}%</div>
+					</div>
+				</div>
+			</div>`;
+	}
+	else if (hitPercent > 75 && hitPercent <= 100) {
+		mainContainer.innerHTML += `
+			<div class="hp">
+				<div class="hpbar fine" style="width:${hitPercent}%">
+					<div id="currenthp">
+						<div style="font-size: 24px">${playerName}${data.PlayerCurrentHealth} / ${data.PlayerMaxHealth}</div>
+						<div class="green" id="percenthp">${hitPercent.toFixed(1)}%</div>
+					</div>
+				</div>
+			</div>`;
+	}
+	else if (hitPercent > 50 && hitPercent <= 75) {
+		mainContainer.innerHTML += `
+			<div class="hp">
+				<div class="hpbar fineToo" style="width:${hitPercent}%">
+					<div id="currenthp">
+						<div style="font-size: 24px">${playerName}${data.PlayerCurrentHealth} / ${data.PlayerMaxHealth}</div>
+						<div class="yellow" id="percenthp">${hitPercent.toFixed(1)}%</div>
+					</div>
+				</div>
+			</div>`;
+	}
+	else if (hitPercent > 25 && hitPercent <= 50) {
+		mainContainer.innerHTML += `
+			<div class="hp">
+				<div class="hpbar caution" style="width:${hitPercent}%">
+					<div id="currenthp">
+						<div style="font-size: 24px">${playerName}${data.PlayerCurrentHealth} / ${data.PlayerMaxHealth}</div>
+						<div class="orange" id="percenthp">${hitPercent.toFixed(1)}%</div>
+					</div>
+				</div>
+			</div>`;
+	}
+	else if (hitPercent >= 0 && hitPercent <= 25){
+		mainContainer.innerHTML += `
+			<div class="hp">
+				<div class="hpbar danger" style="width:${hitPercent}%">
+					<div id="currenthp">
+						<div style="font-size: 24px">${playerName}${data.PlayerCurrentHealth} / ${data.PlayerMaxHealth}</div>
+						<div class="red" id="percenthp">${hitPercent.toFixed(1)}%</div>
+					</div>
+				</div>
+			</div>`;
+	}
+	else{
+		mainContainer.innerHTML += `
+			<div class="hp">
+				<div class="hpbar dead" style="width:${hitPercent}%">
+					<div id="currenthp">
+						<div style="font-size: 24px">${playerName}0 / ${data.PlayerMaxHealth}</div>
+						<div class="grey" id="percenthp">${hitPercent.toFixed(1)}%</div>
+					</div>
+				</div>
+			</div>`;
+	}
+}
+
+function RECVXStats(data) {
+	if (HideIGT && HideStats) { return; }
+	let mainContainer = document.getElementById("srtQueryData");
+	let statHTML = "";
+	if (!HideIGT)
+	{
+		statHTML += `<div class="title">IGT: <font color="#00FF00">${data.IGTFormattedString}</font></div>`
+	}
+	//if (!HideDA)
+	//{
+	//	statHTML += `<div class="title">DA Score: <font color="#00FF00">${data.RankScore}</font></div><div class="title">DA Rank: <font color="#00FF00">${data.Rank}</font></div>`
+	//}
+	if (!HideStats)
+	{
+		statHTML += `<div class="title">Room Name: <font color="#00FF00">${data.Room.Name}</font></div>`
+		statHTML += `<div class="title">Difficulty: <font color="#00FF00">${data.DifficultyName}</font></div>`
+	}
+	mainContainer.innerHTML += `<div id="da">${statHTML}</div>`;
+}
+
+function RECVXEHPBars(data) {
+	if (HideEnemies)
+	{
+		return;
+	}
+	let mainContainer = document.getElementById("srtQueryData");
+	var filterdEnemies = data.Enemy.filter(m => { return (m.IsAlive) });
+	filterdEnemies.sort(function (a, b) {
+		return Asc(a.Percentage, b.Percentage) || Desc(a.CurrentHP, b.CurrentHP);
+	}).forEach(function (item, index, arr) {
+		if (!ShowBossOnly && item.IsAlive) {
+			mainContainer.innerHTML += `<div class="enemyhp"><div class="enemyhpbar danger" style="width:${(item.Percentage * 100).toFixed(1)}%">
+			<div id="currentenemyhp">${item.CurrentHP} / ${item.MaximumHP}</div><div class="red" id="percentenemyhp">${(item.Percentage * 100).toFixed(1)}%</div></div></div>`;
+		}
+		else if (ShowBossOnly && item.IsAlive && item.IsBoss) {
+			mainContainer.innerHTML += `<div class="enemyhp"><div class="enemyhpbar danger" style="width:${(item.Percentage * 100).toFixed(1)}%">
+			<div id="currentenemyhp">${item.BossName}: ${item.CurrentHP} / ${item.MaximumHP}</div><div class="red" id="percentenemyhp">${(item.Percentage * 100).toFixed(1)}%</div></div></div>`;
+		}
+	});
+}
+
 function appendData(data) {
 	//console.log(data);
 	var mainContainer = document.getElementById("srtQueryData");
@@ -658,6 +782,11 @@ function appendData(data) {
 
 	switch (data.GameName)
 	{
+		case "RECVX":
+			RECVXHP(data);
+			RECVXStats(data);
+			RECVXEHPBars(data);
+			return;
 		case "RE0":
 			RE5HP(data.PlayerCurrentHealth, data.PlayerMaxHealth, "Rebecca: ");
 			RE5HP(data.PlayerCurrentHealth2, data.PlayerMaxHealth2, "Billy: ");

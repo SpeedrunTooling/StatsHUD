@@ -67,8 +67,12 @@ body {
 	background: transparent;
 }
 
-.poison{
-	background: #693069;
+.poison {
+	background: rgba(105, 48, 105, 0.6);
+}
+
+.gassed {
+	background: rgb(238, 130, 238, 0.6);
 }
 
 #percenthp {
@@ -87,6 +91,10 @@ body {
 
 .purple {
 	color: 	#693069;
+}
+
+.pink {
+	color: 	#ee82ee;
 }
 
 .yellow {
