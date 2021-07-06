@@ -39,7 +39,18 @@ body {
     background: rgba(34, 26, 26, 0.6);
     width: calc(100% - 8px);
     border: rgba(60, 60, 60, 1) solid 2px;
-    height: 30px;
+	height: 30px;
+}
+
+.hpNoBar {
+    position: relative;
+    left: -1px;
+    width: calc(100% - 8px);
+	height: 30px;
+	display: flex;
+	justify-content: start;
+	font-size: 24px;
+	line-height: 30px;
 }
 
 .hpbar {

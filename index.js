@@ -105,6 +105,14 @@ var Desc = function (a, b) {
 };
 
 // RESIDENT EVIL 0 REMAKE
+function RE0HP(current, name) {
+	let mainContainer = document.getElementById("srtQueryData");
+	mainContainer.innerHTML += `
+	<div class="hpNoBar">
+		${name}<div class="green" id="currenthp">${current}</div>
+	</div>`;
+}
+
 function RE0Stats(data) {
 	if (HideIGT)
 	{
@@ -788,8 +796,8 @@ function appendData(data) {
 			RECVXEHPBars(data);
 			return;
 		case "RE0":
-			RE5HP(data.PlayerCurrentHealth, data.PlayerMaxHealth, "Rebecca: ");
-			RE5HP(data.PlayerCurrentHealth2, data.PlayerMaxHealth2, "Billy: ");
+			RE0HP(data.PlayerCurrentHealth, "Rebecca: ");
+			RE0HP(data.PlayerCurrentHealth2, "Billy: ");
 			RE0Stats(data);
 			return;
 		case "RE1":
