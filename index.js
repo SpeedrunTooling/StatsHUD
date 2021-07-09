@@ -1,28 +1,21 @@
   
 const websocket_endpoint = "wss://relay.aricodes.net/ws";
 
+// PARAM VARIABLES
 var HideIGT = false;
+var HidePosition = false;
 var HideMoney = false;
 var HideDA = false;
 var HideStats = false;
 var ShowBossOnly = false;
 var HideEnemies = false;
-
 var IsSeparated = false;
 var IsPlayer2 = false;
 var IsDebug = false;
 
-var CurrentPlayerID = "0";
-
 window.onload = function () {
 	const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);
-
-	// RE6 Player Name INFO
-	const name = urlParams.get('name');
-	if (name != null) {
-		CurrentPlayerID = name;
-	}
 
 	// HIDE DEBUG INFO
 	const debug = urlParams.get('debug');
@@ -105,169 +98,19 @@ var Desc = function (a, b) {
 };
 
 // RESIDENT EVIL 0 REMAKE
-function RE0HP(current, name) {
-	let mainContainer = document.getElementById("srtQueryData");
-	mainContainer.innerHTML += `
-	<div class="hpNoBar">
-		${name}<div class="green" id="currenthp">${current}</div>
-	</div>`;
-}
-
 function RE0Stats(data) {
-	if (HideIGT)
+	if (HideStats)
 	{
 		return;
 	}
 	let mainContainer = document.getElementById("srtQueryData");
-	mainContainer.innerHTML += `
-	<div id="da">
-		<div class="title">IGT: <font color="#00FF00">${data.IGTFormattedString}</font></div>
-		<div class="title">Saves: <font color="#00FF00">${data.Stats.Saves}</font></div>
-		<div class="title">Kills: <font color="#00FF00">${data.Stats.Kills}</font></div>
-		<div class="title">Shots: <font color="#00FF00">${data.Stats.Shots}</font></div>
-		<div class="title">Recoveries: <font color="#00FF00">${data.Stats.Recoveries}</font></div>
-	</div>`;
-}
-
-// RESIDENT EVIL CLASSIC TITLES
-function RECHP(data) {
-	let mainContainer = document.getElementById("srtQueryData");
-	var hitPercent = (data.PlayerCurrentHealth / data.PlayerMaxHealth) * 100;
-	var playerName = "Player: ";
-	// Player HP
-	if (hitPercent > 75 && hitPercent <= 100) {
-		mainContainer.innerHTML += `
-			<div class="hp">
-				<div class="hpbar fine" style="width:${hitPercent}%">
-					<div id="currenthp">
-						<div style="font-size: 24px">${playerName}${data.PlayerCurrentHealth} / ${data.PlayerMaxHealth}</div>
-						<div class="green" id="percenthp">${hitPercent.toFixed(1)}%</div>
-					</div>
-				</div>
-			</div>`;
-	}
-	else if (hitPercent > 50 && hitPercent <= 75) {
-		mainContainer.innerHTML += `
-			<div class="hp">
-				<div class="hpbar fineToo" style="width:${hitPercent}%">
-					<div id="currenthp">
-						<div style="font-size: 24px">${playerName}${data.PlayerCurrentHealth} / ${data.PlayerMaxHealth}</div>
-						<div class="yellow" id="percenthp">${hitPercent.toFixed(1)}%</div>
-					</div>
-				</div>
-			</div>`;
-	}
-	else if (hitPercent > 25 && hitPercent <= 50) {
-		mainContainer.innerHTML += `
-			<div class="hp">
-				<div class="hpbar caution" style="width:${hitPercent}%">
-					<div id="currenthp">
-						<div style="font-size: 24px">${playerName}${data.PlayerCurrentHealth} / ${data.PlayerMaxHealth}</div>
-						<div class="orange" id="percenthp">${hitPercent.toFixed(1)}%</div>
-					</div>
-				</div>
-			</div>`;
-	}
-	else if (hitPercent >= 0 && hitPercent <= 25){
-		mainContainer.innerHTML += `
-			<div class="hp">
-				<div class="hpbar danger" style="width:${hitPercent}%">
-					<div id="currenthp">
-						<div style="font-size: 24px">${playerName}${data.PlayerCurrentHealth} / ${data.PlayerMaxHealth}</div>
-						<div class="red" id="percenthp">${hitPercent.toFixed(1)}%</div>
-					</div>
-				</div>
-			</div>`;
-	}
-	else{
-		mainContainer.innerHTML += `
-			<div class="hp">
-				<div class="hpbar dead" style="width:${hitPercent}%">
-					<div id="currenthp">
-						<div style="font-size: 24px">${playerName}0 / ${data.PlayerMaxHealth}</div>
-						<div class="grey" id="percenthp">${hitPercent.toFixed(1)}%</div>
-					</div>
-				</div>
-			</div>`;
-	}
-}
-
-function RECStats(data) {
-	if (HideIGT)
-	{
-		return;
-	}
-	let mainContainer = document.getElementById("srtQueryData");
-	mainContainer.innerHTML += `
-	<div id="da">
-		<div class="title">IGT: <font color="#00FF00">${data.IGTFormattedString}</font></div>
-	</div>`;
-}
-
-// RESIDENT EVIL 4
-function RE4HP(current, max, name) {
-	let mainContainer = document.getElementById("srtQueryData");
-	var hitPercent = (current / max) * 100;
-	if (hitPercent > 66) {
-		mainContainer.innerHTML += `<div class="hp"><div class="hpbar fine" style="width:${hitPercent}%">
-				<div id="currenthp">${name}${current} / ${max}</div><div class="green" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
-	}
-	else if (hitPercent <= 66 && hitPercent > 33) {
-		mainContainer.innerHTML += `<div class="hp"><div class="hpbar caution" style="width:${hitPercent}%">
-				<div id="currenthp">${name}${current} / ${max}</div><div class="yellow" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
-	}
-	else if (hitPercent <= 33 && hitPercent > 0){
-		mainContainer.innerHTML += `<div class="hp"><div class="hpbar danger" style="width:${hitPercent}%">
-				<div id="currenthp">${name}${current} / ${max}</div><div class="red" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
-	}
-	else {
-		mainContainer.innerHTML += `<div class="hp"><div class="hpbar dead" style="width:${100}%">
-				<div id="currenthp">${name}${current} / ${max}</div><div class="grey" id="percenthp">${0}%</div></div></div>`;
-	}
-}
-
-function RE4Stats(data) {
-	if (HideIGT && HideMoney && HideDA) { return; }
-	let mainContainer = document.getElementById("srtQueryData");
-	let statHTML = "";
-	if (!HideIGT)
-	{
-		statHTML += `<div class="title">IGT: <font color="#00FF00">${data.IGTFormattedString}</font></div>`
-	}
-	if (!HideMoney)
-	{
-		statHTML += `<div class="title">PTAS: <font color="#00FF00">${"₧ " + data.GameData.Money}</font></div>`
-	}
-	if (!HideDA)
-	{
-		statHTML += `<div class="title">DA Score: <font color="#00FF00">${data.GameData.RankScore}</font></div>`
-		statHTML += `<div class="title">DA Rank: <font color="#00FF00">${Math.floor(data.GameData.RankScore / 1000)}</font></div>`
-	}
-	mainContainer.innerHTML += `<div id="da">${statHTML}</div>`;
+	mainContainer.innerHTML += `<div class="title">Saves: <font color="#00FF00">${data.Stats.Saves}</font></div>`;
+	mainContainer.innerHTML += `<div class="title">Kills: <font color="#00FF00">${data.Stats.Kills}</font></div>`;
+	mainContainer.innerHTML += `<div class="title">Shots: <font color="#00FF00">${data.Stats.Shots}</font></div>`;
+	mainContainer.innerHTML += `<div class="title">Recoveries: <font color="#00FF00">${data.Stats.Recoveries}</font></div>`;
 }
 
 //Resident Evil 5
-function RE5HP(current, max, playerName) {
-	let mainContainer = document.getElementById("srtQueryData");
-	var hitPercent = (current / max) * 100;
-	if (hitPercent > 66) {
-		mainContainer.innerHTML += `<div class="hp"><div class="hpbar fine" style="width:${hitPercent}%">
-				<div id="currenthp">${playerName}${current} / ${max}</div><div class="green" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
-	}
-	else if (hitPercent <= 66 && hitPercent > 33) {
-		mainContainer.innerHTML += `<div class="hp"><div class="hpbar caution" style="width:${hitPercent}%">
-				<div id="currenthp">${playerName}${current} / ${max}</div><div class="yellow" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
-	}
-	else if (hitPercent <= 33 && hitPercent > 0){
-		mainContainer.innerHTML += `<div class="hp"><div class="hpbar danger" style="width:${hitPercent}%">
-				<div id="currenthp">${playerName}${current} / ${max}</div><div class="red" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
-	}
-	else {
-		mainContainer.innerHTML += `<div class="hp"><div class="hpbar dead" style="width:${100}%">
-				<div id="currenthp">${playerName}${current} / ${max}</div><div class="grey" id="percenthp">${0}%</div></div></div>`;
-	}
-}
-
 const Chapters = [
     {
       Accuracy: 70,
@@ -368,57 +211,31 @@ const Chapters = [
 ];
 
 function RE5Stats(data, player) {
-	if (HideIGT && HideMoney && HideStats && HideDA) { return; }
+	if (HideStats && HideDA) { return; }
 	let mainContainer = document.getElementById("srtQueryData");
 	let statHTML = "";
 
-	if (!HideIGT)
-	{
-		statHTML += `<div class="title">IGT: <font color="#00FF00">${data.IGTFormattedString}</font></div>`
-	}
-	if (!HideMoney)
-	{
-		statHTML += `<div class="title">Naira: <font color="#00FF00">${"₦ " + data.Money}</font></div>`
-	}
 	if (!HideDA)
 	{
-		if (!IsSeparated)
+		if (player == 1) 
 		{
 			statHTML += `<div class="title">P1 DA Score: <font color="#00FF00">${data.ChrisDA}</font></div><div class="title">P1 DA Rank: <font color="#00FF00">${data.ChrisDARank}</font></div>`
-			statHTML += `<div class="title">P2 DA Score: <font color="#00FF00">${data.ShevaDA}</font></div><div class="title">P2 DA Rank: <font color="#00FF00">${data.ShevaDARank}</font></div>`
-		}
-		else
-		{
-			if (player == 1) 
-			{
-				statHTML += `<div class="title">P1 DA Score: <font color="#00FF00">${data.ChrisDA}</font></div><div class="title">P1 DA Rank: <font color="#00FF00">${data.ChrisDARank}</font></div>`
-			}
-			else 
-			{
-				statHTML += `<div class="title">P2 DA Score: <font color="#00FF00">${data.ShevaDA}</font></div><div class="title">P2 DA Rank: <font color="#00FF00">${data.ShevaDARank}</font></div>`
-			}
-		}
-		
-	}
-	if (!HideStats)
-	{
-		if (!IsSeparated)
-		{
-			statHTML += `<div class="title">P1 Kills: <font color="#00FF00">${data.ChrisKills} | ${GetNeededKills(data)} | ${GetSRank(data.Chapter, data.EnemiesHits, data.ShotsFired, data.Deaths, data.IGT, data.ChrisKills)}</font></div>`
-			statHTML += `<div class="title">P2 Kills: <font color="#00FF00">${data.ShevaKills} | ${GetNeededKills(data)} | ${GetSRank(data.Chapter, data.EnemiesHits2, data.ShotsFired2, data.Deaths, data.IGT, data.ShevaKills)}</font></div>`
 		}
 		else 
 		{
-			if (player == 1) 
-			{
-				statHTML += `<div class="title">P1 Kills: <font color="#00FF00">${data.ChrisKills} | ${GetNeededKills(data)} | ${GetSRank(data.Chapter, data.EnemiesHits, data.ShotsFired, data.Deaths, data.IGT, data.ChrisKills)}</font></div>`
-			}
-			else
-			{
-				statHTML += `<div class="title">P2 Kills: <font color="#00FF00">${data.ShevaKills} | ${GetNeededKills(data)} | ${GetSRank(data.Chapter, data.EnemiesHits2, data.ShotsFired2, data.Deaths, data.IGT, data.ShevaKills)}</font></div>`
-			}
+			statHTML += `<div class="title">P2 DA Score: <font color="#00FF00">${data.ShevaDA}</font></div><div class="title">P2 DA Rank: <font color="#00FF00">${data.ShevaDARank}</font></div>`
 		}
-		
+	}
+	if (!HideStats)
+	{
+		if (player == 1) 
+		{
+			statHTML += `<div class="title">P1 Kills: <font color="#00FF00">${data.ChrisKills} | ${GetNeededKills(data)} | ${GetSRank(data.Chapter, data.EnemiesHits, data.ShotsFired, data.Deaths, data.IGT, data.ChrisKills)}</font></div>`
+		}
+		else
+		{
+			statHTML += `<div class="title">P2 Kills: <font color="#00FF00">${data.ShevaKills} | ${GetNeededKills(data)} | ${GetSRank(data.Chapter, data.EnemiesHits2, data.ShotsFired2, data.Deaths, data.IGT, data.ShevaKills)}</font></div>`
+		}
 	}
 	mainContainer.innerHTML += `<div id="da">${statHTML}</div>`;
 }
@@ -473,188 +290,13 @@ function GetSRank(chapter, enemiesHit, shotsFired, kills, deaths, time){
 }
 
 // RESIDENT EVIL 6
-function RE6HP(current, max, playerName) {
+function RE6GetCurrentLevel(data) {
+	if (!IsDebug) { return; }
 	let mainContainer = document.getElementById("srtQueryData");
-	var hitPercent = (current / max) * 100;
-	if (hitPercent > 66) {
-		mainContainer.innerHTML += `<div class="hp"><div class="hpbar fine" style="width:${hitPercent}%">
-				<div id="currenthp">${playerName}${current} / ${max}</div><div class="green" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
-	}
-	else if (hitPercent <= 66 && hitPercent > 33) {
-		mainContainer.innerHTML += `<div class="hp"><div class="hpbar caution" style="width:${hitPercent}%">
-				<div id="currenthp">${playerName}${current} / ${max}</div><div class="yellow" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
-	}
-	else if (hitPercent <= 33 && hitPercent > 0){
-		mainContainer.innerHTML += `<div class="hp"><div class="hpbar danger" style="width:${hitPercent}%">
-				<div id="currenthp">${playerName}${current} / ${max}</div><div class="red" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
-	}
-	else {
-		mainContainer.innerHTML += `<div class="hp"><div class="hpbar dead" style="width:${100}%">
-				<div id="currenthp">${playerName}${current} / ${max}</div><div class="grey" id="percenthp">${0}%</div></div></div>`;
-	}
-}
-
-function RE6GetName() {
-	switch (CurrentPlayerID) {
-		case "1":
-			return "Helena: ";
-		case "2":
-			return "Chris: ";
-		case "3":
-			return "Piers: ";
-		case "4":
-			return "Jake: ";
-		case "5":
-			return "Sherry: ";
-		case "6":
-			return "Ada: ";
-		case "7":
-			return "Agent: ";
-		default:
-			return "Leon: ";
-	}
-}
-
-function RE6Stats(da) {
-	if (HideDA) { return; }
-	let mainContainer = document.getElementById("srtQueryData");
-	mainContainer.innerHTML += `<div id="da"><div class="title">DA Score: <font color="#00FF00">${da}</font></div></div>`;
-}
-
-// RESIDENT EVIL ENGINE TITLES
-function REEngineHP(data) {
-	let mainContainer = document.getElementById("srtQueryData");
-	var hitPercent = (data.PlayerCurrentHealth / data.PlayerMaxHealth) * 100;
-	var playerName = "Player: ";
-	if (hitPercent > 66) {
-		mainContainer.innerHTML += `<div class="hp"><div class="hpbar fine" style="width:${hitPercent}%">
-				<div id="currenthp">${playerName}${data.PlayerCurrentHealth} / ${data.PlayerMaxHealth}</div><div class="green" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
-	}
-	else if (hitPercent <= 66 && hitPercent > 33) {
-		mainContainer.innerHTML += `<div class="hp"><div class="hpbar caution" style="width:${hitPercent}%">
-				<div id="currenthp">${playerName}${data.PlayerCurrentHealth} / ${data.PlayerMaxHealth}</div><div class="yellow" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
-	}
-	else if (hitPercent <= 33 && hitPercent > 0){
-		mainContainer.innerHTML += `<div class="hp"><div class="hpbar danger" style="width:${hitPercent}%">
-				<div id="currenthp">${playerName}${data.PlayerCurrentHealth} / ${data.PlayerMaxHealth}</div><div class="red" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
-	}
-	else {
-		mainContainer.innerHTML += `<div class="hp"><div class="hpbar dead" style="width:${100}%">
-				<div id="currenthp">${playerName}${data.PlayerCurrentHealth} / ${data.PlayerMaxHealth}</div><div class="grey" id="percenthp">${0}%</div></div></div>`;
-	}
-}
-
-function REEngineStats(data) {
-	if (HideIGT && HideDA) { return; }
-	let mainContainer = document.getElementById("srtQueryData");
-	let statHTML = "";
-	if (!HideIGT && data.GameName != "RE7" && data.GameName != "RE8")
-	{
-		statHTML += `<div class="title">IGT: <font color="#00FF00">${data.IGTFormattedString}</font></div>`
-	}
-	if (!HideDA)
-	{
-		statHTML += `<div class="title">DA Score: <font color="#00FF00">${data.RankScore}</font></div><div class="title">DA Rank: <font color="#00FF00">${data.Rank}</font></div>`
-	}
-	mainContainer.innerHTML += `<div id="da">${statHTML}</div>`;
-}
-
-function EnemyHPBars(data) {
-	if (HideEnemies)
-	{
-		return;
-	}
-	let mainContainer = document.getElementById("srtQueryData");
-	var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive) });
-	filterdEnemies.sort(function (a, b) {
-		return Asc(a.Percentage, b.Percentage) || Desc(a.CurrentHP, b.CurrentHP);
-	}).forEach(function (item, index, arr) {
-		if (!ShowBossOnly && item.IsAlive) {
-			mainContainer.innerHTML += `<div class="enemyhp"><div class="enemyhpbar danger" style="width:${(item.Percentage * 100).toFixed(1)}%">
-			<div id="currentenemyhp">${item.CurrentHP} / ${item.MaximumHP}</div><div class="red" id="percentenemyhp">${(item.Percentage * 100).toFixed(1)}%</div></div></div>`;
-		}
-		else if (ShowBossOnly && item.IsAlive && item.IsBoss) {
-			mainContainer.innerHTML += `<div class="enemyhp"><div class="enemyhpbar danger" style="width:${(item.Percentage * 100).toFixed(1)}%">
-			<div id="currentenemyhp">${item.BossName}: ${item.CurrentHP} / ${item.MaximumHP}</div><div class="red" id="percentenemyhp">${(item.Percentage * 100).toFixed(1)}%</div></div></div>`;
-		}
-	});
-}
-
-function EnemyHPRE1(data) {
-	if (HideEnemies)
-	{
-		return;
-	}
-	let mainContainer = document.getElementById("srtQueryData");
-	var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive) });
-	filterdEnemies.sort(function (a, b) {
-		return Asc(a.Percentage, b.Percentage) || Desc(a.CurrentHP, b.CurrentHP);
-	}).forEach(function (item, index, arr) {
-		if (item.IsAlive) {
-			mainContainer.innerHTML += `
-			<div class="enemyhpnobar">
-				<div id="currentenemyhp">Enemy: <font color="#FF0000">${item.CurrentHP}</font></div>
-			</div>`;
-		}
-	});
-}
-
-function EnemyHPRE2(data) {
-	if (HideEnemies)
-	{
-		return;
-	}
-	let mainContainer = document.getElementById("srtQueryData");
-	var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive) });
-	filterdEnemies.sort(function (a, b) {
-		return Asc(a.Percentage, b.Percentage) || Desc(a.CurrentHP, b.CurrentHP);
-	}).forEach(function (item, index, arr) {
-		if (!ShowBossOnly && item.IsAlive) {
-			if (item.IsBoss) {
-				let percent = item.CurrentHP / item.MaximumHP * 100;
-				mainContainer.innerHTML += `
-				<div class="enemyhp">
-					<div class="enemyhpbar danger" style="width:${percent.toFixed(1)}%">
-						<div id="currentenemyhp">${item.BossName}: ${item.CurrentHP} / ${item.MaximumHP}</div>
-						<div class="red" id="percentenemyhp">${percent.toFixed(1)}%</div>
-					</div>
-				</div>`;
-			}
-			else {
-				mainContainer.innerHTML += `
-				<div class="enemyhpnobar">
-					<div id="currentenemyhp">Enemy: <font color="#FF0000">${item.CurrentHP}</font></div>
-				</div>`;
-			}
-		}
-		else if (ShowBossOnly && item.IsAlive && item.IsBoss) {
-			let percent = item.CurrentHP / item.MaximumHP * 100;
-			mainContainer.innerHTML += `
-			<div class="enemyhp">
-				<div class="enemyhpbar danger" style="width:${percent.toFixed(1)}%">
-					<div id="currentenemyhp">${item.BossName}: ${item.CurrentHP} / ${item.MaximumHP}</div>
-					<div class="red" id="percentenemyhp">${percent.toFixed(1)}%</div>
-				</div>
-			</div>`;
-		}
-	});
-}
-
-function NemesisHPClassic(data) {
-	if (HideEnemies)
-	{
-		return;
-	}
-	let mainContainer = document.getElementById("srtQueryData");
-	if (data.Nemesis.IsAlive) {
-		mainContainer.innerHTML += `
-		<div class="enemyhp">
-			<div class="enemyhpbar danger" style="width:${(data.Nemesis.Percentage * 100).toFixed(1)}%">
-				<div id="currentenemyhp">${data.Nemesis.BossName}: ${data.Nemesis.CurrentHP} / ${data.Nemesis.MaximumHP}</div>
-				<div class="red" id="percentenemyhp">${(data.Nemesis.Percentage * 100).toFixed(1)}%</div>
-			</div>
-		</div>`;
-	}
+	mainContainer.innerHTML += `
+	<div id="da">
+		<div class="title">Level: <font color="#00FF00">${data.CurrentLevel}</font></div>
+	</div>`;
 }
 
 // RESIDENT EVIL: CODE VERONICA X
@@ -783,6 +425,189 @@ function RECVXEHPBars(data) {
 	});
 }
 
+// ENEMY HP FUNCTIONS
+function EnemyHPBars(data) {
+	if (HideEnemies)
+	{
+		return;
+	}
+	let mainContainer = document.getElementById("srtQueryData");
+	var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive) });
+	filterdEnemies.sort(function (a, b) {
+		return Asc(a.Percentage, b.Percentage) || Desc(a.CurrentHP, b.CurrentHP);
+	}).forEach(function (item, index, arr) {
+		if (!ShowBossOnly && item.IsAlive) {
+			mainContainer.innerHTML += `<div class="enemyhp"><div class="enemyhpbar danger" style="width:${(item.Percentage * 100).toFixed(1)}%">
+			<div id="currentenemyhp">${item.CurrentHP} / ${item.MaximumHP}</div><div class="red" id="percentenemyhp">${(item.Percentage * 100).toFixed(1)}%</div></div></div>`;
+		}
+		else if (ShowBossOnly && item.IsAlive && item.IsBoss) {
+			mainContainer.innerHTML += `<div class="enemyhp"><div class="enemyhpbar danger" style="width:${(item.Percentage * 100).toFixed(1)}%">
+			<div id="currentenemyhp">${item.BossName}: ${item.CurrentHP} / ${item.MaximumHP}</div><div class="red" id="percentenemyhp">${(item.Percentage * 100).toFixed(1)}%</div></div></div>`;
+		}
+	});
+}
+
+function EnemyHPRE1(data) {
+	if (HideEnemies)
+	{
+		return;
+	}
+	let mainContainer = document.getElementById("srtQueryData");
+	var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive) });
+	filterdEnemies.sort(function (a, b) {
+		return Asc(a.Percentage, b.Percentage) || Desc(a.CurrentHP, b.CurrentHP);
+	}).forEach(function (item, index, arr) {
+		if (item.IsAlive) {
+			mainContainer.innerHTML += `
+			<div class="enemyhpnobar">
+				<div id="currentenemyhp">Enemy: <font color="#FF0000">${item.CurrentHP}</font></div>
+			</div>`;
+		}
+	});
+}
+
+function EnemyHPRE2(data) {
+	if (HideEnemies)
+	{
+		return;
+	}
+	let mainContainer = document.getElementById("srtQueryData");
+	var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive) });
+	filterdEnemies.sort(function (a, b) {
+		return Asc(a.Percentage, b.Percentage) || Desc(a.CurrentHP, b.CurrentHP);
+	}).forEach(function (item, index, arr) {
+		if (!ShowBossOnly && item.IsAlive) {
+			if (item.IsBoss) {
+				let percent = item.CurrentHP / item.MaximumHP * 100;
+				mainContainer.innerHTML += `
+				<div class="enemyhp">
+					<div class="enemyhpbar danger" style="width:${percent.toFixed(1)}%">
+						<div id="currentenemyhp">${item.BossName}: ${item.CurrentHP} / ${item.MaximumHP}</div>
+						<div class="red" id="percentenemyhp">${percent.toFixed(1)}%</div>
+					</div>
+				</div>`;
+			}
+			else {
+				mainContainer.innerHTML += `
+				<div class="enemyhpnobar">
+					<div id="currentenemyhp">Enemy: <font color="#FF0000">${item.CurrentHP}</font></div>
+				</div>`;
+			}
+		}
+		else if (ShowBossOnly && item.IsAlive && item.IsBoss) {
+			let percent = item.CurrentHP / item.MaximumHP * 100;
+			mainContainer.innerHTML += `
+			<div class="enemyhp">
+				<div class="enemyhpbar danger" style="width:${percent.toFixed(1)}%">
+					<div id="currentenemyhp">${item.BossName}: ${item.CurrentHP} / ${item.MaximumHP}</div>
+					<div class="red" id="percentenemyhp">${percent.toFixed(1)}%</div>
+				</div>
+			</div>`;
+		}
+	});
+}
+
+function NemesisHPClassic(data) {
+	if (HideEnemies)
+	{
+		return;
+	}
+	let mainContainer = document.getElementById("srtQueryData");
+	if (data.Nemesis.IsAlive) {
+		mainContainer.innerHTML += `
+		<div class="enemyhp">
+			<div class="enemyhpbar danger" style="width:${(data.Nemesis.Percentage * 100).toFixed(1)}%">
+				<div id="currentenemyhp">${data.Nemesis.BossName}: ${data.Nemesis.CurrentHP} / ${data.Nemesis.MaximumHP}</div>
+				<div class="red" id="percentenemyhp">${(data.Nemesis.Percentage * 100).toFixed(1)}%</div>
+			</div>
+		</div>`;
+	}
+}
+
+// UNIVERSAL RESIDENT EVIL FUNCTIONS
+function GetTimer(data) {
+	if (HideIGT) { return; }
+	let mainContainer = document.getElementById("srtQueryData");
+	mainContainer.innerHTML += `<div class="title">IGT: <font color="#00FF00">${data.IGTFormattedString}</font></div>`;
+}
+
+function GetMoney(money) {
+	if (HideMoney) { return; }
+	let mainContainer = document.getElementById("srtQueryData");
+	mainContainer.innerHTML += `<div class="title">PTAS: <font color="#00FF00">${"₧ " + money}</font></div>`;
+}
+
+function GetDA(score) {
+	if (HideDA) { return; }
+	let mainContainer = document.getElementById("srtQueryData");
+	mainContainer.innerHTML += `<div class="title">DA Rank: <font color="#00FF00">${Math.floor(score / 1000)}</font></div>`;
+	mainContainer.innerHTML += `<div class="title">DA Score: <font color="#00FF00">${score}</font></div>`;
+}
+
+function GetDA2(score, rank) {
+	if (HideDA) { return; }
+	let mainContainer = document.getElementById("srtQueryData");
+	mainContainer.innerHTML += `<div class="title">DA Rank: <font color="#00FF00">${rank}</font></div>`;
+	mainContainer.innerHTML += `<div class="title">DA Score: <font color="#00FF00">${score}</font></div>`;
+}
+
+function GetPosition(position) {
+	if (HidePosition) { return; }
+	let mainContainer = document.getElementById("srtQueryData");
+	let children = "";
+	children += `<div class="title">X: <font color="#00FF00">${position.X}</font></div>`;
+	children += `<div class="title">Y: <font color="#00FF00">${position.Y}</font></div>`;
+	children += `<div class="title">Z: <font color="#00FF00">${position.Z}</font></div>`;
+	mainContainer.innerHTML += `<div id="position">${children}</div>`;
+}
+
+function DrawHPBar(player, playerName, states) {
+	if (!player.IsAlive) { return; }
+	let mainContainer = document.getElementById("srtQueryData");
+	let colors = GetColor(player, states);
+	mainContainer.innerHTML += `<div class="hp"><div class="hpbar ${colors[0]}" style="width:${(player.Percentage * 100)}%">
+				<div id="currenthp">${playerName}${player.CurrentHP.toFixed(0)} / ${player.MaxHP}</div><div class="${colors[1]}" id="percenthp">${(player.Percentage * 100).toFixed(1)}%</div></div></div>`;
+}
+
+function GetColor(player, states)
+{
+	if (states == 2) {
+		if (player.HealthState == 1) return ["fine", "green"];
+		else if (player.HealthState == 2) return ["danger", "red"];
+		return ["dead", "grey"];
+	}
+	else if (states == 3) {
+		if (player.HealthState == 1) return ["fine", "green"];
+		else if (player.HealthState == 2) return ["caution", "orange"];
+		else if (player.HealthState == 3) return ["danger", "red"];
+		return ["dead", "grey"];
+	}
+	else if (states == 4) {
+		if (player.HealthState == 1) return ["fine", "green"];
+		else if (player.HealthState == 2) return ["fineToo", "yellow"];
+		else if (player.HealthState == 3) return ["caution", "orange"];
+		else if (player.HealthState == 4) return ["danger", "red"];
+		return ["dead", "grey"];
+	}
+	else if (states == 5) {
+		if (player.IsPoisoned) return ["poison", "purple"];
+		if (player.HealthState == 1) return ["fine", "green"];
+		else if (player.HealthState == 2) return ["fineToo", "yellow"];
+		else if (player.HealthState == 3) return ["caution", "orange"];
+		else if (player.HealthState == 4) return ["danger", "red"];
+		return ["dead", "grey"];
+	}
+	else if (states == 6) {
+		if (player.IsGassed) return ["gassed", "pink"];
+		if (player.IsPoisoned) return ["poison", "purple"];
+		if (player.HealthState == 1) return ["fine", "green"];
+		else if (player.HealthState == 2) return ["fineToo", "yellow"];
+		else if (player.HealthState == 3) return ["caution", "orange"];
+		else if (player.HealthState == 4) return ["danger", "red"];
+		return ["dead", "grey"];
+	}
+}
+
 function appendData(data) {
 	//console.log(data);
 	var mainContainer = document.getElementById("srtQueryData");
@@ -792,127 +617,112 @@ function appendData(data) {
 	{
 		case "RECVX":
 			RECVXHP(data);
+			//DrawHPBar(data.player, data.Player.CharacterFirstName, states)
 			RECVXStats(data);
 			RECVXEHPBars(data);
 			return;
 		case "RE0":
-			RE0HP(data.PlayerCurrentHealth, "Rebecca: ");
-			RE0HP(data.PlayerCurrentHealth2, "Billy: ");
+			GetTimer(data)
+			DrawHPBar(data.Player, data.PlayerName, 4);
+			DrawHPBar(data.Player2, data.PlayerName2, 4);
 			RE0Stats(data);
 			return;
 		case "RE1":
-			RECHP(data);
-			RECStats(data);
+			GetTimer(data);
+			DrawHPBar(data.Player, data.PlayerName, 4);
 			EnemyHPRE1(data);
 			return;
 		case "RE2":
-			RECHP(data);
-			RECStats(data);
+			GetTimer(data);
+			DrawHPBar(data.Player, data.PlayerName, 4);
 			EnemyHPRE2(data)
 			return;
 		case "RE3":
-			RECHP(data);
-			RECStats(data);
+			GetTimer(data);
+			DrawHPBar(data.Player, data.PlayerName, 4);
 			NemesisHPClassic(data);
 			return;
 		case "RE1R":
-			RECHP(data);
-			RECStats(data);
+			GetTimer(data);
+			DrawHPBar(data.Player, data.PlayerName, 4);
 			return;
 		case "RE2R":
-			REEngineHP(data);
-			REEngineStats(data);
+			GetTimer(data);
+			DrawHPBar(data.Player, data.PlayerName, 3);
+			GetDA2(data.RankManager.RankScore, data.RankManager.Rank);
 			EnemyHPBars(data);
 			return;
 		case "RE3R":
-			REEngineHP(data);
-			REEngineStats(data);
+			GetTimer(data);
+			DrawHPBar(data.Player, data.PlayerName, 3);
+			GetDA2(data.RankManager.RankScore, data.RankManager.Rank);
 			EnemyHPBars(data);
 			return;
 		case "RE4":
-			RE4HP(data.GameData.LeonCurrentHP, data.GameData.LeonMaxHP, "Leon: ");
-			RE4HP(data.GameData.AshleyCurrentHP, data.GameData.AshleyMaxHP, "Ashley: ")
-			RE4Stats(data);
+			GetTimer(data);
+			GetMoney(data.GameData.Money);
+			DrawHPBar(data.Player, data.PlayerName, 3);
+			GetDA(data.GameData.RankScore);
+			DrawHPBar(data.Player2, data.PlayerName2, 3);
 			return;
 		case "RE5":
 			if (!IsSeparated)
 			{
-				RE5HP(data.PlayerCurrentHealth, data.PlayerMaxHealth, "P1: ");
-				RE5HP(data.PlayerCurrentHealth2, data.PlayerMaxHealth2, "P2: ");
-				RE5Stats(data, 0);
+				GetTimer(data);
+				GetMoney(data.Money);
+				DrawHPBar(data.Player, "Chris: ", 3);
+				RE5Stats(data, 1);
+				DrawHPBar(data.Player2, "Sheva: ", 3);
+				RE5Stats(data, 2);
 				EnemyHPBars(data);
 			}
 			else 
 			{
 				if (IsPlayer2) 
 				{
-					RE5HP(data.PlayerCurrentHealth2, data.PlayerMaxHealth2, "P2: ");
+					DrawHPBar(data.Player2, "Sheva: ", 3);
 					RE5Stats(data, 2)
 					return;
 				}
-				RE5HP(data.PlayerCurrentHealth, data.PlayerMaxHealth, "P1: ");
+				DrawHPBar(data.Player, "Chris: ", 3);
 				RE5Stats(data, 1);
 				EnemyHPBars(data);
 			}
 			return;
 		case "RE6":
-			if (CurrentPlayerID == "0")
+			RE6GetCurrentLevel(data);
+			if (!IsSeparated)
 			{
-				RE6HP(data.LeonCurrentHealth, data.LeonMaxHealth, RE6GetName());
-				RE6Stats(data.LeonDA);
+				if (data.Player.CurrentHP == 0 && data.Player.MaxHP == 0) return;
+				DrawHPBar(data.Player, data.PlayerName, 2);
+				GetDA(data.PlayerDA);
+
+				if (data.Player2.CurrentHP == 0 && data.Player2.MaxHP == 0) return;
+				DrawHPBar(data.Player2, data.PlayerName2, 2);
+				GetDA(data.Player2DA);
 				return;
 			}
-			else if (CurrentPlayerID == "1")
+			else
 			{
-				RE6HP(data.HelenaCurrentHealth, data.HelenaMaxHealth, RE6GetName());
-				RE6Stats(data.HelenaDA);
+				if (IsPlayer2) 
+				{
+					DrawHPBar(data.Player2, data.PlayerName2, 2);
+					GetDA(data.Player2DA);
+					return;
+				}
+				DrawHPBar(data.Player, data.PlayerName, 2);
+				GetDA(data.PlayerDA);
 				return;
 			}
-			else if (CurrentPlayerID == "2")
-			{
-				RE6HP(data.ChrisCurrentHealth, data.ChrisMaxHealth, RE6GetName());
-				RE6Stats(data.ChrisDA);
-				return;
-			}
-			else if (CurrentPlayerID == "3")
-			{
-				RE6HP(data.PiersCurrentHealth, data.PiersMaxHealth, RE6GetName());
-				RE6Stats(data.PiersDA);
-				return;
-			}
-			else if (CurrentPlayerID == "4")
-			{
-				RE6HP(data.JakeCurrentHealth, data.JakeMaxHealth, RE6GetName());
-				RE6Stats(data.JakeDA);
-				return;
-			}
-			else if (CurrentPlayerID == "5")
-			{
-				RE6HP(data.SherryCurrentHealth, data.SherryMaxHealth, RE6GetName());
-				RE6Stats(data.SherryDA);
-				return;
-			}
-			else if (CurrentPlayerID == "6")
-			{
-				RE6HP(data.AdaCurrentHealth, data.AdaMaxHealth, RE6GetName());
-				RE6Stats(data.AdaDA);
-				return;
-			}
-			else if (CurrentPlayerID == "7")
-			{
-				RE6HP(data.AgentCurrentHealth, data.AgentMaxHealth, RE6GetName());
-				RE6Stats(data.AgentDA);
-				return;
-			}
-			return;
 		case "RE7":
-			REEngineHP(data);
-			REEngineStats(data);
+			GetDA2(data.RankScore, data.Rank);
+			DrawHPBar(data.Player, "Ethan: ", 3);
 			EnemyHPBars(data);
 			return;
 		case "RE8":
-			REEngineHP(data);
-			REEngineStats(data);
+			GetPosition(data.PlayerPosition);
+			DrawHPBar(data.Player, data.PlayerName, 3);
+			GetDA2(data.RankScore, data.Rank);
 			EnemyHPBars(data);
 			return;
 		default:
