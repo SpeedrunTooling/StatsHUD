@@ -447,6 +447,23 @@ function EnemyHPBars(data) {
 	});
 }
 
+function EnemyHPRE0(data) {
+	if (HideEnemies)
+	{
+		return;
+	}
+	let mainContainer = document.getElementById("srtQueryData");
+	var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive && !m.IsPlayer) });
+	filterdEnemies.sort(function (a, b) {
+		return Asc(a.Percentage, b.Percentage) || Desc(a.CurrentHP, b.CurrentHP);
+	}).map(item => {
+		mainContainer.innerHTML += `
+		<div class="enemyhpnobar">
+			<div id="currentenemyhp">Enemy: <font color="#FF0000">${item.CurrentHP}</font></div>
+		</div>`;
+	});
+}
+
 function EnemyHPRE1(data) {
 	if (HideEnemies)
 	{
@@ -626,6 +643,7 @@ function appendData(data) {
 			DrawHPBar(data.Player, data.PlayerName, 4);
 			DrawHPBar(data.Player2, data.PlayerName2, 4);
 			RE0Stats(data);
+			EnemyHPRE0(data);
 			return;
 		case "RE1":
 			GetTimer(data);
