@@ -572,10 +572,10 @@ function GetTimer(data) {
 	mainContainer.innerHTML += `<div class="title">IGT: <font color="#00FF00">${data.IGTFormattedString}</font></div>`;
 }
 
-function GetMoney(money) {
+function GetMoney(title, prefix, money) {
 	if (HideMoney) { return; }
 	let mainContainer = document.getElementById("srtQueryData");
-	mainContainer.innerHTML += `<div class="title">PTAS: <font color="#00FF00">${"₧ " + money}</font></div>`;
+	mainContainer.innerHTML += `<div class="title">${title}<font color="#00FF00">${prefix + money}</font></div>`;
 }
 
 function GetDA(score) {
@@ -711,7 +711,7 @@ function appendData(data) {
 			if (!IsSeparated)
 			{
 				GetTimer(data);
-				GetMoney(data.Money);
+				GetMoney("PTAS: ", "₧ ", data.Money);
 				DrawHPBar(data.Player, "Chris: ", 3);
 				RE5Stats(data, 1);
 				DrawHPBar(data.Player2, "Sheva: ", 3);
@@ -765,7 +765,7 @@ function appendData(data) {
 			GetPosition(data.PlayerPosition);
 			DrawHPBar(data.Player, data.PlayerName, 3);
 			GetDA2(data.RankScore, data.Rank);
-			GetMoney(data.Lei);
+			GetMoney("LEI: ", "", data.Money);
 			EnemyHPBars(data);
 			return;
 		default:
