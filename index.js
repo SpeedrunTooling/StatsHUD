@@ -29,6 +29,12 @@ window.onload = function () {
 		IsDebug = true;
 	}
 
+	// HIDE DEBUG INFO
+	const position = urlParams.get('hideposition');
+	if (position != null) {
+		HidePosition = true;
+	}
+
 	// HIDE IN-GAME TIMER
 	const igt = urlParams.get('hideigt');
 	if (igt != null) {
@@ -759,6 +765,7 @@ function appendData(data) {
 			GetPosition(data.PlayerPosition);
 			DrawHPBar(data.Player, data.PlayerName, 3);
 			GetDA2(data.RankScore, data.Rank);
+			GetMoney(data.Lei);
 			EnemyHPBars(data);
 			return;
 		default:
