@@ -1,5 +1,11 @@
-  
+//ONLINE WEBSOCKET SERVER SETTINGS
 const websocket_endpoint = "wss://relay.aricodes.net/ws";
+
+//LOCAL JSON SERVER SETTINGS
+var JSON_ADDRESS = "127.0.0.1";
+const JSON_PORT = 7190;
+const POLLING_RATE = 333;
+var JSON_ENDPOINT = `http://${JSON_ADDRESS}:${JSON_PORT}/`;
 
 // PARAM VARIABLES
 var HideIGT = false;
@@ -79,10 +85,9 @@ window.onload = function () {
 		socket.onmessage = (event) => appendData(JSON.parse(event.data));
 	}
 	else {
-		let mainContainer = document.getElementById("srtQueryData");
-		mainContainer.innerHTML = "Please provide username params to url to listen to.";
+		getData();
+		setInterval(getData, POLLING_RATE);
 	}
-
 };
 
 var Asc = function (a, b) {
@@ -96,6 +101,19 @@ var Desc = function (a, b) {
 	if (a < b) return +1;
 	return 0;
 };
+
+function getData() {
+	fetch(JSON_ENDPOINT)
+		.then(function (response) {
+			return response.json();
+		})
+		.then(function (data) {
+			appendData(data);
+		})
+		.catch(function (err) {
+			console.log("Error: " + err);
+		});
+}
 
 // RESIDENT EVIL 0 REMAKE
 function RE0Stats(data) {
