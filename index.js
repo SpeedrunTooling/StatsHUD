@@ -762,10 +762,10 @@ function appendData(data) {
 			EnemyHPBars(data);
 			return;
 		case "RE8":
-			GetPosition(data.PlayerPosition);
+			//GetPosition(data.PlayerPosition);
 			DrawHPBar(data.Player, data.PlayerName, 3);
 			GetDA2(data.RankScore, data.Rank);
-			GetMoney("LEI: ", "", data.Money);
+			GetMoney("LEI: ", "", data.Lei);
 			EnemyHPBars(data);
 			return;
 		default:
