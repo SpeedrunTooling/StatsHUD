@@ -657,8 +657,8 @@ function appendData(data) {
 	switch (data.GameName)
 	{
 		case "RECVX":
-			RECVXHP(data);
-			//DrawHPBar(data.player, data.Player.CharacterFirstName, states)
+			//RECVXHP(data);
+			DrawHPBar(data.player, data.Player.CharacterFirstName, 6)
 			RECVXStats(data);
 			RECVXEHPBars(data);
 			return;
