@@ -14,6 +14,7 @@ var HideMoney = false;
 var HideDA = false;
 var HideStats = false;
 var ShowBossOnly = false;
+var ShowOnlyDamaged = false;
 var HideEnemies = false;
 var IsSeparated = false;
 var IsPlayer2 = false;
@@ -74,6 +75,12 @@ window.onload = function () {
 	const boss = urlParams.get('bossonly');
 	if (boss != null) {
 		ShowBossOnly = true;
+	}
+
+	// SHOW BOSS ONLY
+	const damaged = urlParams.get('damagedonly');
+	if (damaged != null) {
+		ShowOnlyDamaged = true;
 	}
 
 	// HIDE ALL ENEMIES
@@ -460,11 +467,15 @@ function EnemyHPBars(data) {
 	filterdEnemies.sort(function (a, b) {
 		return Asc(a.Percentage, b.Percentage) || Desc(a.CurrentHP, b.CurrentHP);
 	}).forEach(function (item, index, arr) {
-		if (!ShowBossOnly && item.IsAlive) {
+		if (!ShowBossOnly && !ShowOnlyDamaged) {
 			mainContainer.innerHTML += `<div class="enemyhp"><div class="enemyhpbar danger" style="width:${(item.Percentage * 100).toFixed(1)}%">
 			<div id="currentenemyhp">${item.CurrentHP} / ${item.MaximumHP}</div><div class="red" id="percentenemyhp">${(item.Percentage * 100).toFixed(1)}%</div></div></div>`;
 		}
-		else if (ShowBossOnly && item.IsAlive && item.IsBoss) {
+		else if (ShowOnlyDamaged && item.IsDamaged) {
+			mainContainer.innerHTML += `<div class="enemyhp"><div class="enemyhpbar danger" style="width:${(item.Percentage * 100).toFixed(1)}%">
+			<div id="currentenemyhp">${item.CurrentHP} / ${item.MaximumHP}</div><div class="red" id="percentenemyhp">${(item.Percentage * 100).toFixed(1)}%</div></div></div>`;
+		}
+		else if (ShowBossOnly && item.IsBoss) {
 			mainContainer.innerHTML += `<div class="enemyhp"><div class="enemyhpbar danger" style="width:${(item.Percentage * 100).toFixed(1)}%">
 			<div id="currentenemyhp">${item.BossName}: ${item.CurrentHP} / ${item.MaximumHP}</div><div class="red" id="percentenemyhp">${(item.Percentage * 100).toFixed(1)}%</div></div></div>`;
 		}
@@ -657,8 +668,7 @@ function appendData(data) {
 	switch (data.GameName)
 	{
 		case "RECVX":
-			//RECVXHP(data);
-			DrawHPBar(data.player, data.Player.CharacterFirstName, 6)
+			DrawHPBar(data.Player, `${data.Player.CharacterFirstName}: `, 6)
 			RECVXStats(data);
 			RECVXEHPBars(data);
 			return;
@@ -687,6 +697,7 @@ function appendData(data) {
 		case "RE1R":
 			GetTimer(data);
 			DrawHPBar(data.Player, data.PlayerName, 4);
+			EnemyHPBars(data);
 			return;
 		case "RE2R":
 			GetTimer(data);
