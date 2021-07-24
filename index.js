@@ -241,6 +241,90 @@ const Chapters = [
     }
 ];
 
+// Devil May Cry 4 SE
+function formatGameTime(gameTimeSecs) {
+    const zeroPrefix = (str, digits=2) => str.length === digits ? str : `0${str}`;
+
+    const hours = Math.floor(gameTimeSecs / 3600);
+    gameTimeSecs = gameTimeSecs % 3600;
+    const minutes = Math.floor(gameTimeSecs / 60);
+    gameTimeSecs = gameTimeSecs % 60;
+
+    const hoursStr = zeroPrefix(hours.toString());
+    const minutesStr = zeroPrefix(minutes.toString());
+    const secondsStr = zeroPrefix(gameTimeSecs.toFixed(3).toString(), digits=6);
+
+    return `${hoursStr}:${minutesStr}:${secondsStr}`;
+}
+
+function DMC4Stats(data){
+	//console.log(data);
+	var mainContainer = document.getElementById("srtQueryData");
+	mainContainer.innerHTML = "";
+
+	//Player HP
+	var hitPercent = (data.PlayerHP / data.PlayerMaxHP) * 100;
+	if(data.PlayerChar == 0){
+		playerName = "Dante: ";
+	} else if(data.PlayerChar == 1){
+		playerName = "Nero: ";
+	} else {
+		playerName = "Vergil: ";
+	}
+	mainContainer.innerHTML += `<div class="hp"><div class="hpbar MainHP" style="width:${hitPercent}%">
+		<div id="currenthp">${playerName}${data.PlayerHP} / ${data.PlayerMaxHP}</div><div class="green" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
+
+
+	//Player DT
+	var hitPercent = (data.PlayerDT / data.PlayerMaxDT) * 100;
+	var playerName = "Devil Trigger: ";
+	mainContainer.innerHTML += `<div class="hp"><div class="hpbar MainDT" style="width:${hitPercent}%">
+		<div id="currenthp">${playerName}${data.PlayerDT} / ${data.PlayerMaxDT}</div><div class="purple" id="percenthp">${hitPercent.toFixed(1)}%</div></div></div>`;
+
+	//IGT
+	var totalTime
+	if(data.FPS == 1){
+		totalTime = data.IGT / 72;
+	} else{
+		totalTime = data.IGT / 60;
+	}
+	mainContainer.innerHTML += `<div id="Money"><div class="title">IGT: <font color="#00FF00">${formatGameTime(totalTime)}</font></div></div>`;
+
+	//Money 
+	mainContainer.innerHTML += `
+	<div id="Money">
+		<div class="title">Red Orbs: </div><font color="#00FF00">${data.RedOrbs}</font>
+	</div>`;
+
+	//Room ID
+	mainContainer.innerHTML += `
+	<div id="Money">
+	<div class="title">Room ID: </div><font color="#00FF00">${data.RoomID}</font>
+	</div>`;
+
+	//var table = document.createElement("table");
+	var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive) });
+	
+	//console.log("Filtered Enemies", filterdEnemies);
+	filterdEnemies.sort(function (a, b) {
+		return Asc(a.Percentage, b.Percentage) || Desc(a.CurrentHP, b.CurrentHP);
+	}).forEach(function (item, index, arr) {
+		if (item.IsAlive) {
+			mainContainer.innerHTML += `<div class="enemyhp"><div class="enemyhpbar danger" style="width:${(item.Percentage * 100).toFixed(1)}%">
+			<div id="currentenemyhp">${item.CurrentHP}</div><div class="red" id="percentenemyhp">${(item.Percentage * 100).toFixed(1)}%</div></div></div>`;
+		}
+	});
+
+	//SRTVersion, GameVersion
+	mainContainer.innerHTML += `
+	<div id="SRTVersion">
+		<div class="title"></div><font color="#FFFFFF">${"TV: " + data.VersionInfo}</font>
+		<div class="title"></div><font color="#FFFFFF">${"GV: " + data.GameInfo}</font>
+	</div>`;
+}
+
+// Devil May Cry 4 Finish
+
 function RE5Stats(data, player) {
 	if (HideStats && HideDA) { return; }
 	let mainContainer = document.getElementById("srtQueryData");
@@ -667,6 +751,9 @@ function appendData(data) {
 
 	switch (data.GameName)
 	{
+		case "DMC4SE":
+			DMC4Stats(data);
+			return;
 		case "RECVX":
 			DrawHPBar(data.Player, `${data.Player.CharacterFirstName}: `, 6)
 			RECVXStats(data);
