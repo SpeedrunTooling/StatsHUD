@@ -241,6 +241,15 @@ const Chapters = [
     }
 ];
 
+// RE4
+function RE4Stats(data){
+	let mainContainer = document.getElementById("srtQueryData");
+	mainContainer.innerHTML = "";
+	mainContainer.innerHTML += `<div id="title">Last Item: <font color="#00FF00">${data.GamePlayerItemID.Name}</font></div>`;
+	mainContainer.innerHTML += `<div id="title">Chapter Kills: <font color="#00FF00">${data.GamePlayerKills.ChapterKills}</font></div>`;
+	mainContainer.innerHTML += `<div id="title">Kills: <font color="#00FF00">${data.GamePlayerKills.Kills}</font></div>`;
+}
+
 // Devil May Cry 4 SE
 function formatGameTime(gameTimeSecs) {
     const zeroPrefix = (str, digits=2) => str.length === digits ? str : `0${str}`;
@@ -799,8 +808,9 @@ function appendData(data) {
 			EnemyHPBars(data);
 			return;
 		case "RE4":
+			RE4Stats(data);
 			GetTimer(data);
-			GetMoney(data.GameData.Money);
+			GetMoney("PTAS: ", data.GameData.Money, "₧");
 			DrawHPBar(data.Player, data.PlayerName, 3);
 			GetDA(data.GameData.RankScore);
 			DrawHPBar(data.Player2, data.PlayerName2, 3);
@@ -809,7 +819,7 @@ function appendData(data) {
 			if (!IsSeparated)
 			{
 				GetTimer(data);
-				GetMoney("PTAS: ", "₧ ", data.Money);
+				GetMoney("Naira: ", "₦ ", data.Money);
 				DrawHPBar(data.Player, "Chris: ", 3);
 				RE5Stats(data, 1);
 				DrawHPBar(data.Player2, "Sheva: ", 3);
