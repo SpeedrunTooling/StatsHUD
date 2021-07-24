@@ -288,17 +288,17 @@ function DMC4Stats(data){
 	} else{
 		totalTime = data.IGT / 60;
 	}
-	mainContainer.innerHTML += `<div id="Money"><div class="title">IGT: <font color="#00FF00">${formatGameTime(totalTime)}</font></div></div>`;
+	mainContainer.innerHTML += `<div id="DMC4Design"><div class="title">IGT: <font color="#00FF00">${formatGameTime(totalTime)}</font></div></div>`;
 
 	//Money 
 	mainContainer.innerHTML += `
-	<div id="Money">
+	<div id="DMC4Design">
 		<div class="title">Red Orbs: </div><font color="#00FF00">${data.RedOrbs}</font>
 	</div>`;
 
 	//Room ID
 	mainContainer.innerHTML += `
-	<div id="Money">
+	<div id="DMC4Design">
 	<div class="title">Room ID: </div><font color="#00FF00">${data.RoomID}</font>
 	</div>`;
 
