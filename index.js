@@ -794,6 +794,10 @@ function appendData(data) {
 
 	switch (data.GameName)
 	{
+		case "Dino Crisis 1 Rebirth":
+			GetTimer(data);
+			DrawHPBar(data.Player, "Regina: ", 4);
+			return;
 		case "DMC4SE":
 			DMC4Stats(data);
 			return;
@@ -803,7 +807,7 @@ function appendData(data) {
 			RECVXEHPBars(data);
 			return;
 		case "RE0":
-			GetTimer(data)
+			GetTimer(data);
 			DrawHPBar(data.Player, data.PlayerName, 4);
 			DrawHPBar(data.Player2, data.PlayerName2, 4);
 			RE0Stats(data);
