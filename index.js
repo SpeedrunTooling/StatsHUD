@@ -469,15 +469,15 @@ function EnemyHPBars(data) {
 	}).forEach(function (item, index, arr) {
 		if (!ShowBossOnly && !ShowOnlyDamaged) {
 			mainContainer.innerHTML += `<div class="enemyhp"><div class="enemyhpbar danger" style="width:${(item.Percentage * 100).toFixed(1)}%">
-			<div id="currentenemyhp">${item.CurrentHP} / ${item.MaximumHP}</div><div class="red" id="percentenemyhp">${(item.Percentage * 100).toFixed(1)}%</div></div></div>`;
+			<div class="red" id="currentenemyhp">${item.CurrentHP} / ${item.MaximumHP}</div><div class="red" id="percentenemyhp">${(item.Percentage * 100).toFixed(1)}%</div></div></div>`;
 		}
 		else if (ShowOnlyDamaged && item.IsDamaged) {
 			mainContainer.innerHTML += `<div class="enemyhp"><div class="enemyhpbar danger" style="width:${(item.Percentage * 100).toFixed(1)}%">
-			<div id="currentenemyhp">${item.CurrentHP} / ${item.MaximumHP}</div><div class="red" id="percentenemyhp">${(item.Percentage * 100).toFixed(1)}%</div></div></div>`;
+			<div class="red" id="currentenemyhp">${item.CurrentHP} / ${item.MaximumHP}</div><div class="red" id="percentenemyhp">${(item.Percentage * 100).toFixed(1)}%</div></div></div>`;
 		}
 		else if (ShowBossOnly && item.IsBoss) {
 			mainContainer.innerHTML += `<div class="enemyhp"><div class="enemyhpbar danger" style="width:${(item.Percentage * 100).toFixed(1)}%">
-			<div id="currentenemyhp">${item.BossName}: ${item.CurrentHP} / ${item.MaximumHP}</div><div class="red" id="percentenemyhp">${(item.Percentage * 100).toFixed(1)}%</div></div></div>`;
+			<div class="red" id="currentenemyhp">${item.BossName}: ${item.CurrentHP} / ${item.MaximumHP}</div><div class="red" id="percentenemyhp">${(item.Percentage * 100).toFixed(1)}%</div></div></div>`;
 		}
 	});
 }
@@ -534,7 +534,7 @@ function EnemyHPRE2(data) {
 				mainContainer.innerHTML += `
 				<div class="enemyhp">
 					<div class="enemyhpbar danger" style="width:${percent.toFixed(1)}%">
-						<div id="currentenemyhp">${item.BossName}: ${item.CurrentHP} / ${item.MaximumHP}</div>
+						<div class="red" id="currentenemyhp">${item.BossName}: ${item.CurrentHP} / ${item.MaximumHP}</div>
 						<div class="red" id="percentenemyhp">${percent.toFixed(1)}%</div>
 					</div>
 				</div>`;
@@ -542,7 +542,7 @@ function EnemyHPRE2(data) {
 			else {
 				mainContainer.innerHTML += `
 				<div class="enemyhpnobar">
-					<div id="currentenemyhp">Enemy: <font color="#FF0000">${item.CurrentHP}</font></div>
+					<div class="red" id="currentenemyhp">Enemy: <font color="#FF0000">${item.CurrentHP}</font></div>
 				</div>`;
 			}
 		}
@@ -551,7 +551,7 @@ function EnemyHPRE2(data) {
 			mainContainer.innerHTML += `
 			<div class="enemyhp">
 				<div class="enemyhpbar danger" style="width:${percent.toFixed(1)}%">
-					<div id="currentenemyhp">${item.BossName}: ${item.CurrentHP} / ${item.MaximumHP}</div>
+					<div class="red" id="currentenemyhp">${item.BossName}: ${item.CurrentHP} / ${item.MaximumHP}</div>
 					<div class="red" id="percentenemyhp">${percent.toFixed(1)}%</div>
 				</div>
 			</div>`;
@@ -574,6 +574,21 @@ function NemesisHPClassic(data) {
 			</div>
 		</div>`;
 	}
+}
+
+function REV1EnemyHPBar(data) {
+	if (HideEnemies)
+	{
+		return;
+	}
+	let mainContainer = document.getElementById("srtQueryData");
+	var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive) });
+	filterdEnemies.sort(function (a, b) {
+		return Asc(a.Percentage, b.Percentage) || Desc(a.CurrentHP, b.CurrentHP);
+	}).forEach(function (item, index, arr) {
+		mainContainer.innerHTML += `<div class="enemyhp"><div class="enemyhpbar danger" style="width:${(item.Percentage * 100).toFixed(1)}%">
+			<div class="red" id="currentenemyhp">${item.Name}${item.CurrentHP} / ${item.MaximumHP}</div><div class="red" id="percentenemyhp">${(item.Percentage * 100).toFixed(1)}%</div></div></div>`;
+	});
 }
 
 // UNIVERSAL RESIDENT EVIL FUNCTIONS
@@ -621,6 +636,14 @@ function DrawHPBar(player, playerName, states) {
 				<div id="currenthp">${playerName}${player.CurrentHP.toFixed(0)} / ${player.MaxHP}</div><div class="${colors[1]}" id="percenthp">${(player.Percentage * 100).toFixed(1)}%</div></div></div>`;
 }
 
+function DrawHPBar2(data, playerName, states) {
+	if (!data.Player.IsAlive) { return; }
+	let mainContainer = document.getElementById("srtQueryData");
+	let colors = GetColor2(data, states);
+	mainContainer.innerHTML += `<div class="hp"><div class="hpbar ${colors[0]}" style="width:${(data.Player.Percentage * 100)}%">
+				<div class="${colors[1]}" id="currenthp">${playerName}${data.Player.CurrentHP.toFixed(0)} / ${data.Player.MaxHP}</div><div class="${colors[1]}" id="percenthp">${(data.Player.Percentage * 100).toFixed(1)}%</div></div></div>`;
+}
+
 function GetColor(player, states)
 {
 	if (states == 2) {
@@ -656,6 +679,17 @@ function GetColor(player, states)
 		else if (player.HealthState == 2) return ["fineToo", "yellow"];
 		else if (player.HealthState == 3) return ["caution", "orange"];
 		else if (player.HealthState == 4) return ["danger", "red"];
+		return ["dead", "grey"];
+	}
+}
+
+function GetColor2(data, states)
+{
+	if (states == 4) {
+		if (data.IsPoisoned) return ["poison", "purple"];
+		if (data.Player.HealthState == 1) return ["fine", "green"];
+		else if (data.Player.HealthState == 2) return ["caution", "yellow"];
+		else if (data.Player.HealthState == 3) return ["danger", "red"];
 		return ["dead", "grey"];
 	}
 }
@@ -701,7 +735,7 @@ function appendData(data) {
 			return;
 		case "RE2R":
 			GetTimer(data);
-			DrawHPBar(data.Player, data.PlayerName, 3);
+			DrawHPBar2(data, data.PlayerName, 4);
 			GetDA2(data.RankManager.RankScore, data.RankManager.Rank);
 			EnemyHPBars(data);
 			return;
@@ -778,6 +812,17 @@ function appendData(data) {
 			GetDA2(data.RankScore, data.Rank);
 			GetMoney("LEI: ", "", data.Lei);
 			EnemyHPBars(data);
+			return;
+		case "REREV1":
+			GetTimer(data);
+			DrawHPBar(data.Player, data.Player.Name, 4);
+			GetDA2(data.EndResults.RankScore, data.EndResults.Rank);
+			REV1EnemyHPBar(data);
+			return;
+		case "REREV2":
+			GetTimer(data);
+			DrawHPBar(data.Player, data.PlayerName, 4);
+			DrawHPBar(data.Player2, data.Player2Name, 4);
 			return;
 		default:
 			mainContainer.innerHTML += "No Plugin Detected";

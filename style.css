@@ -78,7 +78,7 @@ body {
 }
 
 .poison {
-	background: rgba(105, 48, 105, 0.6);
+	background: rgba(73, 58, 85, 0.6);
 }
 
 .gassed {
@@ -96,11 +96,11 @@ body {
 }
 
 .green {
-	color: #00FF00;
+	color: rgb(150, 255, 150);
 }
 
 .purple {
-	color: 	#693069;
+	color: 	rgb(222, 182, 255);
 }
 
 .pink {
@@ -108,7 +108,7 @@ body {
 }
 
 .yellow {
-	color: yellow;
+	color: rgb(255, 255, 150);
 }
 
 .orange {
@@ -116,7 +116,7 @@ body {
 }
 
 .red {
-	color: red;
+	color: rgb(255, 172, 172);
 }
 
 .grey {
