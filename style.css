@@ -95,6 +95,14 @@ body {
 	line-height: 30px;
 }
 
+.MainHP {
+	background: rgba(0, 102, 0, 0.6);
+}
+
+.MainDT {
+	background: purple;
+}
+
 .green {
 	color: rgb(150, 255, 150);
 }
@@ -192,4 +200,22 @@ body {
 	padding-right: 10px;
 	font-size: 24px;
 	line-height: 30px;
+}
+
+#SRTVersion {
+	position: relative;
+	align-items: center;
+	right: 0px;
+	top: 5px;
+	font-size: 20px;
+	display: flexbox;
+}
+
+#DMC4Design {
+	position: relative;
+	top: 5px;
+	font-size: 20px;
+	display: flex;
+	justify-content: start;
+	padding-left: 10px;
 }
