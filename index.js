@@ -901,7 +901,7 @@ function appendData(data) {
 			{
 				DrawProgressBar(data.EnemyHealth.CurrentHP, data.EnemyHealth.MaxHP, data.EnemyHealth.Percentage, "", ["danger", "red"]);
 			}
-			DinoCrisisCheatSheet(data.Stats.RoomID, IsDebug);
+			//DinoCrisisCheatSheet(data.Stats.RoomID, IsDebug);
 			return;
 		case "DMC4SE":
 			DMC4Stats(data);
