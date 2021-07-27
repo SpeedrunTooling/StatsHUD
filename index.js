@@ -737,6 +737,71 @@ function DrawHPBar2(data, playerName, states) {
 				<div class="${colors[1]}" id="currenthp">${playerName}${data.Player.CurrentHP.toFixed(0)} / ${data.Player.MaxHP}</div><div class="${colors[1]}" id="percenthp">${(data.Player.Percentage * 100).toFixed(1)}%</div></div></div>`;
 }
 
+function DrawEHPBar(enemy, name) {
+	if (!enemy.IsAlive) { return; }
+	let mainContainer = document.getElementById("srtQueryData");
+	let colors = ["danger", "red"];
+	mainContainer.innerHTML += `<div class="enemyhp"><div class="enemyhpbar ${colors[0]}" style="width:${(enemy.Percentage * 100)}%">
+				<div id="currentenemyhp">${name}${enemy.CurrentHP.toFixed(0)} / ${enemy.MaxHP}</div><div class="${colors[1]}" id="percentenemyhp">${(enemy.Percentage * 100).toFixed(1)}%</div></div></div>`;
+}
+
+//	<summary>
+//	PROGRESS BAR DRAW FUNCTION
+//	</summary>
+//
+//	current = current value;
+//	max = max value;
+//	percent = current / max as float 0 - 1
+//	label = string label for progress bar (optional)
+//	colors = array of color class names as string
+//	Example
+// DrawProgressBar(1000, 1000, 1, "Player: ", ["fine", "green"]);
+function DrawProgressBar(current, max, percent, label, colors) 
+{
+	let mainContainer = document.getElementById("srtQueryData");
+	mainContainer.innerHTML += `<div class="bar"><div class="progressbar ${colors[0]}" style="width:${(percent * 100)}%">
+		<div id="currentprogress">${label}${current} / ${max}</div><div class="${colors[1]}" id="percentprogress">${(percent * 100).toFixed(1)}%</div></div></div>`;
+}
+
+//	<summary>
+//	TEXTBLOCK DRAW FUNCTION
+//	</summary>
+//
+//	label = string label
+//	val = current value
+//	colors = array of color class names as string
+//	hideParam = user choosen query parameter
+//	Example
+//	DrawTextBlock("IGT", "00:00:00", ["white", "green2"], HideIGT);
+function DrawTextBlock(label, val, colors, hideParam)
+{
+	if (hideParam) { return; }
+	let mainContainer = document.getElementById("srtQueryData");
+	mainContainer.innerHTML += `<div class="title ${colors[0]}">${label}: <span class="${colors[1]}">${val}</span></div>`;
+}
+
+//	<summary>
+//	FLEXBOXED TEXTBLOCK DRAW FUNCTION
+//	</summary>
+//
+//	labels = string labels array
+//	vals = current value array
+//	colors = array of color class names as string
+//	hideParam = user choosen query parameter
+//	Example
+//	DrawTextBlocks(["DARank", "DAScore"], [9, 9999], ["white", "green2"], HideDA);
+function DrawTextBlocks(labels, vals, colors, hideParam)
+{
+	if (hideParam) { return; }
+	let mainContainer = document.getElementById("srtQueryData");
+	let children = "";
+	for (var i = 0; i < labels.length; i++)
+	{
+		children += `<div class="title ${colors[0]}">${labels[i]}: <span class="${colors[1]}">${vals[i]}</span></div>`
+	}
+	mainContainer.innerHTML += `<div class="textblock">${children}</div>`;
+}
+
 function GetColor(player, states)
 {
 	if (states == 2) {
@@ -787,6 +852,36 @@ function GetColor2(data, states)
 	}
 }
 
+function DinoCrisisCheatSheet(roomID, hide)
+{
+	if (roomID == 271) DrawTextBlock("Battery Puzzle", "2, 3, 2", ["white", "green2"], hide);
+	else if (roomID == 1) DrawTextBlock("Password", "JP: 0375 / US: 0426", ["white", "green2"], hide);
+	else if (roomID == 2) DrawTextBlock("DDK H", "HEAD", ["white", "green2"], hide);
+	else if (roomID == 3) DrawTextBlock("Password", "705037", ["white", "green2"], hide);
+	else if (roomID == 4) DrawTextBlock("DDK N", "NEWCOMER", ["white", "green2"], hide);
+	else if (roomID == 5) DrawTextBlock("Battery Puzzle", "1, 2, 3, 1, 2, 1", ["white", "green2"], hide);
+	else if (roomID == 6) DrawTextBlock("Paul Baker ID", "JP: 46907 / US: 58104", ["white", "green2"], hide);
+	else if (roomID == 7) DrawTextBlock("", "", ["white", "green2"], hide);
+	else if (roomID == 8) DrawTextBlock("", "", ["white", "green2"], hide);
+	else if (roomID == 9) DrawTextBlock("", "", ["white", "green2"], hide);
+	else if (roomID == 10) DrawTextBlock("", "", ["white", "green2"], hide);
+	else if (roomID == 11) DrawTextBlock("", "", ["white", "green2"], hide);
+	else if (roomID == 12) DrawTextBlock("", "", ["white", "green2"], hide);
+	else if (roomID == 13) DrawTextBlock("", "", ["white", "green2"], hide);
+	else if (roomID == 14) DrawTextBlock("", "", ["white", "green2"], hide);
+	else if (roomID == 15) DrawTextBlock("", "", ["white", "green2"], hide);
+	else if (roomID == 16) DrawTextBlock("", "", ["white", "green2"], hide);
+	else if (roomID == 17) DrawTextBlock("", "", ["white", "green2"], hide);
+	else if (roomID == 18) DrawTextBlock("", "", ["white", "green2"], hide);
+	else if (roomID == 19) DrawTextBlock("", "", ["white", "green2"], hide);
+	else if (roomID == 20) DrawTextBlock("", "", ["white", "green2"], hide);
+	else if (roomID == 21) DrawTextBlock("", "", ["white", "green2"], hide);
+	else if (roomID == 22) DrawTextBlock("", "", ["white", "green2"], hide);
+	else if (roomID == 23) DrawTextBlock("", "", ["white", "green2"], hide);
+	else if (roomID == 24) DrawTextBlock("", "", ["white", "green2"], hide);
+	else if (roomID == 25) DrawTextBlock("", "", ["white", "green2"], hide);
+}
+
 function appendData(data) {
 	//console.log(data);
 	var mainContainer = document.getElementById("srtQueryData");
@@ -795,8 +890,18 @@ function appendData(data) {
 	switch (data.GameName)
 	{
 		case "Dino Crisis 1 Rebirth":
-			GetTimer(data);
-			DrawHPBar(data.Player, "Regina: ", 4);
+			DrawTextBlock("IGT", data.IGTFormattedString, ["white", "green2"], HideIGT);
+			let _colors = GetColor(data.Player, 4);
+			DrawProgressBar(data.Player.CurrentHP, data.Player.MaxHP, data.Player.Percentage, "Regina: ", _colors);
+			DrawTextBlock("RoomID", data.Stats.RoomID, ["white", "green2"], IsDebug);
+			DrawTextBlock("Room", data.Stats.RoomName, ["white", "green2"], IsDebug);
+			DrawTextBlock("Save Count", data.Stats.SaveCount, ["white", "green2"], IsDebug);
+			DrawTextBlock("Continues", data.Stats.Continues, ["white", "green2"], IsDebug);
+			if (data.EnemyHealth.IsAlive)
+			{
+				DrawProgressBar(data.EnemyHealth.CurrentHP, data.EnemyHealth.MaxHP, data.EnemyHealth.Percentage, "", ["danger", "red"]);
+			}
+			DinoCrisisCheatSheet(data.Stats.RoomID, IsDebug);
 			return;
 		case "DMC4SE":
 			DMC4Stats(data);
