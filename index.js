@@ -8,6 +8,7 @@ const POLLING_RATE = 333;
 var JSON_ENDPOINT = `http://${JSON_ADDRESS}:${JSON_PORT}/`;
 
 // PARAM VARIABLES
+var HideRoom = false;
 var HideIGT = false;
 var HidePosition = false;
 var HideMoney = false;
@@ -890,21 +891,11 @@ function appendData(data) {
 	switch (data.GameName)
 	{
 		case "Dino Crisis 1 Rebirth":
-			DrawTextBlock("IGT", data.IGTFormattedString, ["white", "green2"], HideIGT);
-			let _colors = GetColor(data.Player, 4);
-			DrawProgressBar(data.Player.CurrentHP, data.Player.MaxHP, data.Player.Percentage, "Regina: ", _colors);
-			DrawTextBlock("RoomID", data.Stats.RoomID, ["white", "green2"], IsDebug);
-			DrawTextBlock("Room", data.Stats.RoomName, ["white", "green2"], IsDebug);
-			DrawTextBlock("Save Count", data.Stats.SaveCount, ["white", "green2"], IsDebug);
-			DrawTextBlock("Continues", data.Stats.Continues, ["white", "green2"], IsDebug);
-			if (data.EnemyHealth.IsAlive)
-			{
-				DrawProgressBar(data.EnemyHealth.CurrentHP, data.EnemyHealth.MaxHP, data.EnemyHealth.Percentage, "", ["danger", "red"]);
-			}
-			//DinoCrisisCheatSheet(data.Stats.RoomID, IsDebug);
+			DinoCrisis1(data);
 			return;
 		case "DMC4SE":
-			DMC4Stats(data);
+			DevilMayCry4(data);
+			//DMC4Stats(data);
 			return;
 		case "RECVX":
 			DrawHPBar(data.Player, `${data.Player.CharacterFirstName}: `, 6)
@@ -1034,4 +1025,40 @@ function appendData(data) {
 			mainContainer.innerHTML += "No Plugin Detected";
 			return;
 	}
+}
+
+function DinoCrisis1(data)
+{
+	let _colors = GetColor(data.Player, 4);
+	DrawTextBlock("IGT", data.IGTFormattedString, ["white", "green2"], HideIGT);
+	DrawProgressBar(data.Player.CurrentHP, data.Player.MaxHP, data.Player.Percentage, "Regina: ", _colors);
+	DrawTextBlock("RoomID", data.Stats.RoomID, ["white", "green2"], IsDebug);
+	DrawTextBlock("Room", data.Stats.RoomName, ["white", "green2"], IsDebug);
+	DrawTextBlock("Save Count", data.Stats.SaveCount, ["white", "green2"], IsDebug);
+	DrawTextBlock("Continues", data.Stats.Continues, ["white", "green2"], IsDebug);
+	if (data.EnemyHealth.IsAlive)
+	{
+		DrawProgressBar(data.EnemyHealth.CurrentHP, data.EnemyHealth.MaxHP, data.EnemyHealth.Percentage, "", ["danger", "red"]);
+	}
+	DinoCrisisCheatSheet(data.Stats.RoomID, IsDebug);
+}
+
+function DevilMayCry4(data)
+{
+	let _colors = GetColor(data.Player, 3);
+	DrawProgressBar(data.Player.CurrentHP, data.Player.MaxHP, data.Player.PercentageHP, data.Player.Name, _colors);
+	DrawProgressBar(data.Player.CurrentDT, data.Player.MaxDT, data.Player.PercentageDT, "Devil Trigger: ", ["devil", "purple"]);
+	DrawTextBlock("IGT", data.IGTFormattedString, ["white", "green2"], HideIGT);
+	DrawTextBlock("Red Orbs", data.Stats.RedOrbs, ["white", "green2"], HideMoney);
+	DrawTextBlock("Room ID", data.Stats.RoomID, ["white", "green2"], HideRoom);
+
+	var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive) });
+	filterdEnemies.sort(function (a, b) {
+		return Asc(a.Percentage, b.Percentage) || Desc(a.CurrentHP, b.CurrentHP);
+	}).forEach(function (item, index, arr) {
+		if (item.IsAlive) DrawProgressBar(item.CurrentHP, item.MaximumHP, item.Percentage, "", ["danger", "red"]);
+	});
+
+	DrawTextBlock("TV", data.VersionInfo, ["white", "green2"], IsDebug);
+	DrawTextBlock("GV", data.GameInfo, ["white", "green2"], IsDebug);
 }

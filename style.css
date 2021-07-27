@@ -99,34 +99,6 @@ body {
 	width: 420px;
 }
 
-.fine {
-	background: rgba(0, 102, 0, 0.6);
-}
-
-.fineToo {
-	background: rgba(255, 255, 0, 0.6);
-}
-
-.caution {
-	background: rgba(218, 165, 32, 0.6);
-}
-
-.danger {
-	background: rgba(153,0,0,0.6);
-}
-
-.dead {
-	background: transparent;
-}
-
-.poison {
-	background: rgba(73, 58, 85, 0.6);
-}
-
-.gassed {
-	background: rgb(238, 130, 238, 0.6);
-}
-
 #percenthp {
 	position: absolute;
 	top: 0px;
@@ -135,50 +107,6 @@ body {
 	padding-right: 10px;
 	font-size: 24px;
 	line-height: 30px;
-}
-
-.MainHP {
-	background: rgba(0, 102, 0, 0.6);
-}
-
-.MainDT {
-	background: purple;
-}
-
-.green {
-	color: rgb(150, 255, 150);
-}
-
-.green2 {
-	color: rgb(0, 255, 0);
-}
-
-.purple {
-	color: 	rgb(222, 182, 255);
-}
-
-.pink {
-	color: 	#ee82ee;
-}
-
-.yellow {
-	color: rgb(255, 255, 150);
-}
-
-.orange {
-	color: orange;
-}
-
-.red {
-	color: rgb(255, 172, 172);
-}
-
-.grey {
-	color: gray;
-}
-
-.white{
-	color:#ffffff;
 }
 
 #position {
@@ -264,4 +192,74 @@ body {
 	display: flex;
 	justify-content: start;
 	padding-left: 10px;
+}
+
+/* HP BAR COLORS */
+.fine {
+	background: rgba(0, 102, 0, 0.6);
+}
+
+.fineToo {
+	background: rgba(255, 255, 0, 0.6);
+}
+
+.caution {
+	background: rgba(218, 165, 32, 0.6);
+}
+
+.danger {
+	background: rgba(153,0,0,0.6);
+}
+
+.dead {
+	background: transparent;
+}
+
+.poison {
+	background: rgba(73, 58, 85, 0.6);
+}
+
+.gassed {
+	background: rgb(238, 130, 238, 0.6);
+}
+
+.devil {
+	background: rgb(128, 0, 128, 0.6);
+}
+
+/* TEXT COLORS */
+.green {
+	color: rgb(150, 255, 150);
+}
+
+.green2 {
+	color: rgb(0, 255, 0);
+}
+
+.purple {
+	color: 	rgb(222, 182, 255);
+}
+
+.pink {
+	color: 	#ee82ee;
+}
+
+.yellow {
+	color: rgb(255, 255, 150);
+}
+
+.orange {
+	color: orange;
+}
+
+.red {
+	color: rgb(255, 172, 172);
+}
+
+.grey {
+	color: gray;
+}
+
+.white{
+	color:#ffffff;
 }
