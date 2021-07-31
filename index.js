@@ -257,9 +257,11 @@ function appendData(data) {
 	//console.log(data);
 	var mainContainer = document.getElementById("srtQueryData");
 	mainContainer.innerHTML = "";
-
 	switch (data.GameName)
 	{
+		case "Dead Rising 1":
+			DeadRising1(data);
+			return;
 		case "Dino Crisis 1 Rebirth":
 			DinoCrisis1(data);
 			return;
@@ -267,9 +269,7 @@ function appendData(data) {
 			DevilMayCry4(data);
 			return;
 		case "RECVX":
-			DrawHPBar(data.Player, `${data.Player.CharacterFirstName}: `, 6)
-			RECVXStats(data);
-			RECVXEHPBars(data);
+			ResidentEvilCodeVeronicaX(data);
 			return;
 		case "RE0":
 			ResidentEvil0Remake(data);
@@ -316,6 +316,30 @@ function appendData(data) {
 		default:
 			mainContainer.innerHTML += "No Plugin Detected";
 			return;
+	}
+}
+
+function DrawContainerBG()
+{
+	var mainContainer = document.getElementById("srtQueryData");
+	mainContainer.innerHTML += `<div class="container-bg"></div>`;
+}
+// DEAD RISING 1
+function DeadRising1(data)
+{
+	let _colors = GetColor(data.CarInfo);
+	DrawContainerBG();
+	DrawAlignedTextBlocks(["X", "Y", "Z", "RX", "RY"], [data.Player.X, data.Player.Y, data.Player.Z, data.Player.RX, data.Player.RY], ["white", "green2"], "center", HidePosition);
+	if (data.CarInfo.IsAlive) DrawProgressBar(data.CarInfo.CurrentHealth, data.CarInfo.MaxHealth, data.CarInfo.Percentage, "Car: ", _colors);
+	DrawTextBlock("Stock", data.PlayerStats.ItemStock + 1, ["white", "green2"], HideStats);
+	//DrawTextBlock("Speed", data.PlayerStats.Speed, ["white", "green2"], HideStats);
+	if (data.CurrentWeapon.MaxDurability != 0) DrawProgressBar(data.CurrentWeapon.Durability, data.CurrentWeapon.MaxDurability, data.CurrentWeapon.Percentage, "Weapon Durability: ", ["caution", "yellow"]);
+	if (data.CurrentWeapon.MaxAmmo != 0) DrawTextBlock("Weapon Ammo", `${data.CurrentWeapon.Ammo} / ${data.CurrentWeapon.MaxAmmo}`, ["white", "green2"], HideStats);
+	DrawTextBlock("Campain Progress", data.Campaign.CampainProgress, ["white", "green2"], !IsDebug);
+	DrawTextBlock("Room ID", data.RoomData.RoomId, ["white", "green2"], !IsDebug);
+	if (data.Boss.IsAlive)
+	{
+		DrawProgressBar(data.Boss.CurrentHealth, data.Boss.MaxHealth, data.Boss.Percentage, "", ["danger", "red"]);
 	}
 }
 
@@ -432,7 +456,7 @@ function ResidentEvil2Classic(data)
 function ResidentEvil2Remake(data)
 {
 	DrawTextBlock("IGT", data.IGTFormattedString, ["white", "green2"], HideIGT);
-	let _colors = GetColor2(data.Player);
+	let _colors = GetColor(data.Player);
 	DrawProgressBar(data.Player.CurrentHP, data.Player.MaxHP, data.Player.Percentage, data.PlayerName, _colors);
 	DrawTextBlocks(["Rank", "RankScore"], [data.RankManager.Rank, data.RankManager.RankScore], ["white", "green2"], HideDA);
 	var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive) });
