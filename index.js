@@ -636,7 +636,7 @@ function ResidentEvil8(data)
 // RESIDENT EVIL: CODE VERONICA X
 function ResidentEvilCodeVeronicaX(data)
 {
-	DrawTextBlock("IGT", data.IGTFormattedString, ["white", "green2"], HideIGT);
+	DrawTextBlock("IGT", data.IGT.FormattedString, ["white", "green2"], HideIGT);
 	let _colors = GetColor(data.Player);
 	DrawProgressBar(data.Player.CurrentHP, data.Player.MaxHP, data.Player.Percentage, `${data.Player.CharacterFirstName}: `, _colors);
 	DrawTextBlock("Room Name", data.Room.Name, ["white", "green2"], HideStats);
