@@ -645,7 +645,7 @@ function ResidentEvilCodeVeronicaX(data)
 	filterdEnemies.sort(function (a, b) {
 		return Asc(a.Percentage, b.Percentage) || Desc(a.CurrentHP, b.CurrentHP);
 	}).forEach(function (item, index, arr) {
-		DrawProgressBar(item.CurrentHP, item.MaximumHP, item.Percentage, item.Name, ["danger", "red"]);
+		DrawProgressBar(item.CurrentHP, item.MaximumHP, item.Percentage, item.TypeName, ["danger", "red"]);
 	});
 }
 
