@@ -268,6 +268,9 @@ function appendData(data) {
 		case "DMC4SE":
 			DevilMayCry4(data);
 			return;
+		case "TEW":
+			TheEvilWithin(data);
+			return;
 		case "RECVX":
 			ResidentEvilCodeVeronicaX(data);
 			return;
@@ -379,6 +382,39 @@ function DevilMayCry4(data)
 
 	DrawTextBlock("TV", data.VersionInfo, ["white", "green2"], IsDebug);
 	DrawTextBlock("GV", data.GameInfo, ["white", "green2"], IsDebug);
+}
+
+// THE EVIL WITHIN
+
+// Will be changed later
+function formatGameTime(gameTimeSecs) {
+    const zeroPrefix = (str, digits=2) => str.length === digits ? str : `0${str}`;
+
+    const hours = Math.floor(gameTimeSecs / 3600);
+    gameTimeSecs = gameTimeSecs % 3600;
+    const minutes = Math.floor(gameTimeSecs / 60);
+    gameTimeSecs = gameTimeSecs % 60;
+
+    const hoursStr = zeroPrefix(hours.toString());
+    const minutesStr = zeroPrefix(minutes.toString());
+    const secondsStr = zeroPrefix(gameTimeSecs.toFixed(0).toString(), digits=2);
+
+    return `${hoursStr}:${minutesStr}:${secondsStr}`;
+}
+
+function TheEvilWithin(data)
+{
+	let _colors = GetColor(data.Player);
+	DrawProgressBar(data.Player.CurrentHP, data.Player.MaxHP, data.Player.PercentageHP, "Sebastian: ", _colors);
+	DrawTextBlock("IGT",formatGameTime(data.Stats.IGT), ["white", "green2"], HideIGT);
+	DrawTextBlock("Green Gel", `${data.GreenGel}`, ["white", "green2"], HideMoney);
+
+	var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive) });
+	filterdEnemies.sort(function (a, b) {
+		return Asc(a.CurrentHP, b.CurrentHP) || Desc(a.CurrentHP, b.CurrentHP);
+	}).forEach(function (item, index, arr) {
+		DrawProgressBar(item.CurrentHP, item.MaximumHP, item.Percentage, "", ["danger", "red"]);
+	});
 }
 
 // RESIDENT EVIL 0
@@ -498,12 +534,12 @@ function ResidentEvil3Remake(data)
 // RESIDENT EVIL 4
 function ResidentEvil4(data)
 {
-	DrawTextBlock("IGT", data.IGTFormattedString, ["white", "green2"], HideIGT);
 	let _colors = GetColor(data.Player);
 	DrawProgressBar(data.Player.CurrentHP, data.Player.MaxHP, data.Player.Percentage, data.PlayerName, _colors);
 	let _colors2 = GetColor(data.Player2);
 	DrawProgressBar(data.Player2.CurrentHP, data.Player2.MaxHP, data.Player2.Percentage, data.PlayerName2, _colors2);
 	let rank = Math.floor(data.GameData.RankScore / 1000);
+	DrawTextBlock("IGT", data.IGTFormattedString, ["white", "green2"], HideIGT);
 	DrawTextBlocks(["RankScore", "Rank"], [data.GameData.RankScore, rank], ["white", "green2"], HideDA);
 	DrawTextBlock("PTAS", `₧ ${data.GameData.Money}`, ["white", "green2"], HideMoney);
 	DrawTextBlock("Last Item", data.GamePlayerItemID.Name, ["white", "green2"], HideStats);
@@ -514,37 +550,19 @@ function ResidentEvil4(data)
 // RESIDENT EVIL 5
 function ResidentEvil5(data)
 {
-	DrawTextBlock("IGT", data.IGTFormattedString, ["white", "green2"], HideIGT);
-	DrawTextBlock("Naira", `₦ ${data.Money}`, ["white", "green2"], HideMoney);
-	if (!IsSeparated)
-	{
-		let _colors = GetColor(data.Player);
-		DrawProgressBar(data.Player.CurrentHP, data.Player.MaxHP, data.Player.Percentage, "Chris: ", _colors);
-		DrawTextBlocks(["P1 Rank", "P1 RankScore"], [data.ChrisDARank, data.ChrisDA], ["white", "green2"], HideDA);
-		DrawTextBlock("P1 Kills", `${data.ChrisKills} | ${data.KillsRequired} | ${data.IsSRank ? "S" : "No S"}`, ["white", "green2"], HideStats);
-		
-		let _colors2 = GetColor(data.Player2);
-		DrawProgressBar(data.Player2.CurrentHP, data.Player2.MaxHP, data.Player2.Percentage, "Sheva: ", _colors2);
-		DrawTextBlocks(["P2 Rank", "P2 RankScore"], [data.ShevaDARank, data.ShevaDA], ["white", "green2"], HideDA);
-		DrawTextBlock("P2 Kills", `${data.ShevaKills} | ${data.KillsRequired} | ${data.IsSRank2 ? "S" : "No S"}`, ["white", "green2"], HideStats);
-	}
-	else 
-	{
-		if (IsPlayer2) 
-		{
-			let _colors2 = GetColor(data.Player2);
-			DrawProgressBar(data.Player2.CurrentHP, data.Player2.MaxHP, data.Player2.Percentage, "Sheva: ", _colors2);
-			DrawTextBlocks(["P2 Rank", "P2 RankScore"], [data.ShevaDARank, data.ShevaDA], ["white", "green2"], HideDA);
-			DrawTextBlock("P2 Kills", `${data.ShevaKills} | ${data.KillsRequired} | ${data.IsSRank2 ? "S" : "No S"}`, ["white", "green2"], HideStats);
-		}
-		else
-		{
-			let _colors = GetColor(data.Player);
-			DrawProgressBar(data.Player.CurrentHP, data.Player.MaxHP, data.Player.Percentage, "Chris: ", _colors);
-			DrawTextBlocks(["P1 Rank", "P1 RankScore"], [data.ChrisDARank, data.ChrisDA], ["white", "green2"], HideDA);
-			DrawTextBlock("P1 Kills", `${data.ChrisKills} | ${data.KillsRequired} | ${data.IsSRank ? "S" : "No S"}`, ["white", "green2"], HideStats);
-		}
-	}
+	let _colors = GetColor(data.Player);
+	let _colors2 = GetColor(data.Player2);
+	//DrawTextBlock("IGT", data.IGTFormattedString, ["white", "green2"], HideIGT);
+	//Player HPs
+	DrawProgressBar(data.Player.CurrentHP, data.Player.MaxHP, data.Player.Percentage, "Chris: ", _colors);
+	DrawProgressBar(data.Player2.CurrentHP, data.Player2.MaxHP, data.Player2.Percentage, "Sheva: ", _colors2);
+	//Player Stats
+	DrawTextBlocks(["Naira", "P1 Kills", "Max", "Rank?", "P2 Kills", "Max", "Rank?"], ["₦ " + data.Money, data.ChrisKills, data.KillsRequired, data.IsSRank ? "S" : "No S",
+	 data.ShevaKills, data.KillsRequired, data.IsSRank2 ? "S" : "No S"], ["white", "green2"], HideMoney, HideStats);
+	DrawTextBlocks(["P1 DA", "P1 Rank"], [data.ChrisDA, data.ChrisDARank], ["white", "green2"], HideDA);
+	DrawTextBlocks(["P2 DA", "P2 Rank"], [data.ShevaDA, data.ShevaDARank], ["white", "green2"], HideDA);
+
+
 	var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive) });
 	filterdEnemies.sort(function (a, b) {
 		return Asc(a.CurrentHP, b.CurrentHP) || Desc(a.CurrentHP, b.CurrentHP);
@@ -554,54 +572,86 @@ function ResidentEvil5(data)
 }
 
 // RESIDENT EVIL6
-function ResidentEvil6(data)
-{
-	DrawTextBlock("Level ID", data.CurrentLevel, ["white", "green2"], IsDebug);
-	if (!IsSeparated)
-	{
-		let _colors = GetColor(data.Player);
-		if (data.Player.CurrentHP != 0 && data.Player.MaxHP != 0)
-		{
-			DrawProgressBar(data.Player.CurrentHP, data.Player.MaxHP, data.Player.Percentage, data.PlayerName, _colors);
-			DrawTextBlocks(["P1 Rank", "P1 RankScore"], [rank, data.PlayerDA], ["white", "green2"], HideDA);
+var RE6Names = ['Leon', 'Helena', 'Chris', 'Piers', 'Jake', 'Sherry', 'Ada', 'Agent'];
+
+function GetRE6PlayerDA(data, value) {
+	var playerDA;
+	if (data.PlayerID == 0 || data.PlayerID == 2 || data.PlayerID == 4 || data.PlayerID == 6) {
+		switch (data.PlayerID + value) {
+			case 0:
+				return playerDA = data.Stats.DALeon;
+			case 1:
+				return playerDA = data.Stats.DAHelena;
+			case 2:
+				return playerDA = data.Stats.DAChris;
+			case 3:
+				return playerDA = data.Stats.DAPiers;
+			case 4:
+				return playerDA = data.Stats.DAJake;
+			case 5:
+				return playerDA = data.Stats.DASherry;
+			case 6:
+				return playerDA = data.Stats.DAAda;
+			case 7:
+				return playerDA = data.Stats.DAHunk;
+			default:
 		}
-		
-		
-		let _colors2 = GetColor(data.Player2);
-		if (data.Player2.CurrentHP != 0 && data.Player2.MaxHP != 0)
-		{
-			DrawProgressBar(data.Player2.CurrentHP, data.Player2.MaxHP, data.Player2.Percentage, data.PlayerName2, _colors2);
-			DrawTextBlocks(["P2 Rank", "P2 RankScore"], [rank2, data.Player2DA], ["white", "green2"], HideDA);
+	} else {
+		switch (data.PlayerID - value) {
+			case 0:
+				return playerDA = data.Stats.DALeon;
+			case 1:
+				return playerDA = data.Stats.DAHelena;
+			case 2:
+				return playerDA = data.Stats.DAChris;
+			case 3:
+				return playerDA = data.Stats.DAPiers;
+			case 4:
+				return playerDA = data.Stats.DAJake;
+			case 5:
+				return playerDA = data.Stats.DASherry;
+			case 6:
+				return playerDA = data.Stats.DAAda;
+			case 7:
+				return playerDA = data.Stats.DAHunk;
+			default:
 		}
 	}
-	else 
-	{
-		if (IsPlayer2) 
-		{
-			let _colors = GetColor(data.Player);
-			if (data.Player.CurrentHP != 0 && data.Player.MaxHP != 0)
-			{
-				DrawProgressBar(data.Player2.CurrentHP, data.Player2.MaxHP, data.Player2.Percentage, data.PlayerName2, _colors);
-				DrawTextBlocks(["P1 Rank", "P1 RankScore"], [rank, data.Player2DA], ["white", "green2"], HideDA);
-			}
-		}
-		else
-		{
-			let _colors = GetColor(data.Player);
-			if (data.Player2.CurrentHP != 0 && data.Player2.MaxHP != 0)
-			{
-				DrawProgressBar(data.Player.CurrentHP, data.Player.MaxHP, data.Player.Percentage, data.PlayerName, _colors);
-				DrawTextBlocks(["P1 Rank", "P1 RankScore"], [data.ChrisDARank, data.PlayerDA], ["white", "green2"], HideDA);
-			}
-		}
-		
+}
+
+function ResidentEvil6(data) {
+	let _colors = GetColor(data.Player);
+	let _colors2 = GetColor(data.Player2);
+	// Check which character we are playing currently to prevent showing wrong data
+	if (data.PlayerID == 0 || data.PlayerID == 2 || data.PlayerID == 4 || data.PlayerID == 6) {
+		// Player HP
+		DrawProgressBar(data.Player.CurrentHP, data.Player.MaxHP, data.Player.PercentageHP, RE6Names[data.PlayerID] + ": ", _colors);
+		DrawProgressBar(data.Player2.CurrentHP, data.Player2.MaxHP, data.Player2.PercentageHP, RE6Names[data.PlayerID + 1] + ": ", _colors2);
+
+		// Player DA
+		DrawTextBlock("DA " + RE6Names[data.PlayerID], GetRE6PlayerDA(data, 0), ["white", "green2"]);
+		DrawTextBlock("DA " + RE6Names[data.PlayerID + 1], GetRE6PlayerDA(data, 1), ["white", "green2"]);
+	} else {
+		// Player HP
+		DrawProgressBar(data.Player.CurrentHP, data.Player.MaxHP, data.Player.PercentageHP, RE6Names[data.PlayerID - 1] + ": ", _colors);
+		DrawProgressBar(data.Player2.CurrentHP, data.Player2.MaxHP, data.Player2.PercentageHP, RE6Names[data.PlayerID] + ": ", _colors2);
+
+		// Player DA
+		DrawTextBlock("DA " + RE6Names[data.PlayerID - 1], GetRE6PlayerDA(data, 1), ["white", "green2"]);
+		DrawTextBlock("DA " + RE6Names[data.PlayerID], GetRE6PlayerDA(data, 0), ["white", "green2"]);
 	}
+
+	// Enemy HP
 	var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive) });
 	filterdEnemies.sort(function (a, b) {
-		return Asc(a.CurrentHP, b.CurrentHP) || Desc(a.CurrentHP, b.CurrentHP);
+		return Asc(a.Percentage, b.Percentage) || Desc(a.CurrentHP, b.CurrentHP);
 	}).forEach(function (item, index, arr) {
 		DrawProgressBar(item.CurrentHP, item.MaximumHP, item.Percentage, "", ["danger", "red"]);
 	});
+
+	// Versions
+	DrawTextBlock("TV", data.VersionInfo, ["white", "green2"]);
+	DrawTextBlock("GV", data.GameInfo, ["white", "green2"]);
 }
 
 // RESIDENT EVIL 7
