@@ -640,6 +640,8 @@ function ResidentEvil6(data) {
 		DrawTextBlock("DA " + RE6Names[data.PlayerID - 1], GetRE6PlayerDA(data, 1), ["white", "green2"]);
 		DrawTextBlock("DA " + RE6Names[data.PlayerID], GetRE6PlayerDA(data, 0), ["white", "green2"]);
 	}
+	
+	DrawTextBlock("Skill Points ", data.StatusPoints + data.StatusPointsCur, ["white", "green2"]);
 
 	// Enemy HP
 	var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive) });
