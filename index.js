@@ -644,12 +644,29 @@ function ResidentEvil6(data) {
 	DrawTextBlock("Skill Points ", data.StatusPoints + data.StatusPointsCur, ["white", "green2"]);
 
 	// Enemy HP
-	var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive) });
-	filterdEnemies.sort(function (a, b) {
-		return Asc(a.Percentage, b.Percentage) || Desc(a.CurrentHP, b.CurrentHP);
-	}).forEach(function (item, index, arr) {
-		DrawProgressBar(item.CurrentHP, item.MaximumHP, item.Percentage, "", ["danger", "red"]);
-	});
+	if(data.Areas == 300 || data.Areas == 301 || data.Areas == 303 || data.Areas == 500 || data.Areas == 501 || data.Areas == 502 
+		|| data.Areas == 503 || data.Areas == 504 || data.Areas == 506 || data.Areas == 507 || data.Areas == 770){
+		var filteredExceptions = data.EnemyHealth.filter(m => {return (m.MaximumHP != 1000 && m.IsAlive)});
+		filteredExceptions.sort(function (a, b) {
+			return Asc(a.Percentage, b.Percentage) || Desc(a.CurrentHP, b.CurrentHP);
+		}).forEach(function (item, index, arr) {
+			DrawProgressBar(item.CurrentHP, item.MaximumHP, item.Percentage, "", ["danger", "red"]);
+		});
+	} else if(data.Areas == 300 || data.Areas == 301){
+		var filteredExceptions = data.EnemyHealth.filter(m => {return (m.MaximumHP != 10000 && m.IsAlive)});
+		filteredExceptions.sort(function (a, b) {
+			return Asc(a.Percentage, b.Percentage) || Desc(a.CurrentHP, b.CurrentHP);
+		}).forEach(function (item, index, arr) {
+			DrawProgressBar(item.CurrentHP, item.MaximumHP, item.Percentage, "", ["danger", "red"]);
+		});
+	} else{
+		var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive) });
+		filterdEnemies.sort(function (a, b) {
+			return Asc(a.Percentage, b.Percentage) || Desc(a.CurrentHP, b.CurrentHP);
+		}).forEach(function (item, index, arr) {
+			DrawProgressBar(item.CurrentHP, item.MaximumHP, item.Percentage, "", ["danger", "red"]);
+		});
+	}
 
 	// Versions
 	DrawTextBlock("TV", data.VersionInfo, ["white", "green2"]);
