@@ -27,6 +27,21 @@ body {
 	padding-right: 10px;
 }
 
+/* Resident Evil 5 */
+#RE5Stats {
+	position: relative;
+	font-size: 16px;
+	display: flex;
+	justify-content: start;
+}
+
+.RE5title {
+	padding-right: 4px;
+	
+}
+
+/* Resident Evil 5 end*/
+
 .textblock {
 	width: 100%;
 	display: flex;
