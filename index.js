@@ -550,18 +550,34 @@ function ResidentEvil4(data)
 // RESIDENT EVIL 5
 function ResidentEvil5(data)
 {
+	var mainContainer = document.getElementById("srtQueryData");
+	mainContainer.innerHTML = "";
 	let _colors = GetColor(data.Player);
 	let _colors2 = GetColor(data.Player2);
 	//DrawTextBlock("IGT", data.IGTFormattedString, ["white", "green2"], HideIGT);
 	//Player HPs
 	DrawProgressBar(data.Player.CurrentHP, data.Player.MaxHP, data.Player.Percentage, "Chris: ", _colors);
 	DrawProgressBar(data.Player2.CurrentHP, data.Player2.MaxHP, data.Player2.Percentage, "Sheva: ", _colors2);
-	//Player Stats
-	DrawTextBlocks(["Naira", "P1 Kills", "Max", "Rank?", "P2 Kills", "Max", "Rank?"], ["₦ " + data.Money, data.ChrisKills, data.KillsRequired, data.IsSRank ? "S" : "No S",
-	 data.ShevaKills, data.KillsRequired, data.IsSRank2 ? "S" : "No S"], ["white", "green2"], HideMoney, HideStats);
-	DrawTextBlocks(["P1 DA", "P1 Rank"], [data.ChrisDA, data.ChrisDARank], ["white", "green2"], HideDA);
-	DrawTextBlocks(["P2 DA", "P2 Rank"], [data.ShevaDA, data.ShevaDARank], ["white", "green2"], HideDA);
 
+	//Player Stats
+	mainContainer.innerHTML += `
+	<div id="RE5Stats">
+		<div class="RE5title">Naira: </div><font color="#00FF00">${"₦ " + data.Money}</font><div></div>
+	</div>`;
+
+	mainContainer.innerHTML += `
+	<div id="RE5Stats">
+		<div class="RE5title">P1 Kills: </div><font color="#00FF00">${data.ChrisKills} | ${data.KillsRequired} | ${data.IsSRank ? "S" : "No S" + "&nbsp;" + "&nbsp;" + "&nbsp;"}</font>
+		<div class="RE5title">P2 Kills: </div><font color="#00FF00">${data.ShevaKills} | ${data.KillsRequired} | ${data.IsSRank ? "S" : "No S"}</font>
+	</div>`;
+
+	if(data.Gamestate == 6 || data.Gamestate == 7){
+		DrawTextBlocks(["P1 DA", "P1 Rank"], [data.ChrisDA, data.ChrisDARank], ["white", "green2"], HideDA);
+		DrawTextBlocks(["P2 DA", "P2 Rank"], [data.ShevaDA, data.ShevaDARank], ["white", "green2"], HideDA);
+	} else{
+		DrawTextBlocks(["P1 DA", "P1 Rank"], ["0", "0"], ["white", "green2"], HideDA);
+		DrawTextBlocks(["P2 DA", "P2 Rank"], ["0", "0"], ["white", "green2"], HideDA);
+	}
 
 	var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive) });
 	filterdEnemies.sort(function (a, b) {
