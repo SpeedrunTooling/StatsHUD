@@ -701,7 +701,7 @@ function ResidentEvil7(data)
 	filterdJackEyes.sort(function (a, b) {
 		return Asc(a.CurrentHP, b.CurrentHP) || Desc(a.CurrentHP, b.CurrentHP);
 	}).forEach(function (item, index, arr) {
-		DrawProgressBar(item.CurrentHP, item.CurrentHP, 1, "", ["danger", "red"]);
+		DrawProgressBar(item.CurrentHP, item.MaxHP, item.Percentage, "", ["danger", "red"]);
 	});
 
 	// Enemy HPs
