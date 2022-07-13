@@ -707,25 +707,11 @@ function ResidentEvil7(data)
 	DrawProgressBar(data.Player.CurrentHP, data.Player.MaxHP, data.Player.Percentage, "Player: ", _colors);
 	DrawTextBlocks(["Rank", "RankScore"], [data.Rank, data.RankScore], ["white", "green2"], HideDA);
 
-	/* Jack Eyes
-	var filterdJackEyes = data.JackHP.filter(m => { return (m.IsAlive) });
-	filterdJackEyes.sort(function (a, b) {
-		return Asc(a.CurrentHP, b.CurrentHP) || Desc(a.CurrentHP, b.CurrentHP);
-	}).forEach(function (item, index, arr) {
-		DrawProgressBar(item.CurrentHP, item.CurrentHP, 1, "", ["danger", "red"]);
-	});*/
-
 	// Jack Eyes new
 	var filteredJackNewEyes = data.JackHP.filter(m => {return (m.IsAlive)});
-
 	filteredJackNewEyes.forEach(function (item, index, arr){
-		if(item.CurrentHP[index > 1] == 0){
-			DrawProgressBar(item.CurrentHP, 1300, item.CurrentHP / 1300, "", ["danger", "red"]);
-		} else{
-			DrawProgressBar(item.CurrentHP, JackHPs[index].MaxJackHP, item.CurrentHP / JackHPs[index].MaxJackHP, "", ["danger", "red"]);
-		}
+		DrawProgressBar(item.CurrentHP, JackHPs[index].MaxJackHP, item.CurrentHP / JackHPs[index].MaxJackHP, "", ["danger", "red"]);
 	});
-
 
 	// Enemy HPs
 	var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive) });
