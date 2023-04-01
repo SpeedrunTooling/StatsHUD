@@ -298,6 +298,9 @@ function appendData(data) {
 		case "RE4":
 			ResidentEvil4(data);
 			return;
+		case "RE4R":
+			ResidentEvil4Remake(data);
+			return;
 		case "RE5":
 			ResidentEvil5(data);
 			return;
@@ -545,6 +548,21 @@ function ResidentEvil4(data)
 	DrawTextBlock("Last Item", data.GamePlayerItemID.Name, ["white", "green2"], HideStats);
 	DrawTextBlock("Chapter Kills", data.GamePlayerKills.ChapterKills, ["white", "green2"], HideStats);
 	DrawTextBlock("Kills", data.GamePlayerKills.Kills, ["white", "green2"], HideStats);
+}
+
+// REMAKE
+function ResidentEvil4Remake(data)
+{
+	DrawTextBlock("IGT", data.IGTFormattedString, ["white", "green2"], HideIGT);
+	let _colors = GetColor(data.PlayerHealth);
+	DrawProgressBar(data.PlayerHealth.CurrentHealth, data.PlayerHealth.MaximumHealth, data.PlayerHealth.Percentage, "Leon: ", _colors);
+	DrawTextBlocks(["Rank", "ActionPoint", "ItemPoint"], [data.Rank.Rank, data.Rank.ActionPoint, data.Rank.ItemPoint], ["white", "green2", "green2"], HideDA);
+	var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive) });
+	filterdEnemies.sort(function (a, b) {
+		return Asc(a.CurrentHealth, b.CurrentHealth) || Desc(a.CurrentHealth, b.CurrentHealth);
+	}).forEach(function (item, index, arr) {
+		DrawProgressBar(item.CurrentHealth, item.MaximumHealth, item.Percentage, "", ["danger", "red"]);
+	});
 }
 
 // RESIDENT EVIL 5
