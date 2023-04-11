@@ -555,13 +555,13 @@ function ResidentEvil4Remake(data)
 {
 	DrawTextBlock("IGT", data.IGTFormattedString, ["white", "green2"], HideIGT);
 	let _colors = GetColor(data.PlayerHealth);
-	DrawProgressBar(data.PlayerHealth.CurrentHealth, data.PlayerHealth.MaximumHealth, data.PlayerHealth.Percentage, "Leon: ", _colors);
+	DrawProgressBar(data.PlayerHealth.CurrentHitPoint, data.PlayerHealth.DefaultHitPoint, data.PlayerHealth.Percentage, "Leon: ", _colors);
 	DrawTextBlocks(["Rank", "ActionPoint", "ItemPoint"], [data.Rank.Rank, data.Rank.ActionPoint, data.Rank.ItemPoint], ["white", "green2", "green2"], HideDA);
 	var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive) });
 	filterdEnemies.sort(function (a, b) {
-		return Asc(a.CurrentHealth, b.CurrentHealth) || Desc(a.CurrentHealth, b.CurrentHealth);
+		return Asc(a.CurrentHitPoint, b.CurrentHitPoint) || Desc(a.CurrentHitPoint, b.CurrentHitPoint);
 	}).forEach(function (item, index, arr) {
-		DrawProgressBar(item.CurrentHealth, item.MaximumHealth, item.Percentage, "", ["danger", "red"]);
+		DrawProgressBar(item.CurrentHitPoint, item.DefaultHitPoint, item.Percentage, "", ["danger", "red"]);
 	});
 }
 
