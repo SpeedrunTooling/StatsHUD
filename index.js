@@ -557,6 +557,7 @@ function ResidentEvil4Remake(data)
 	let _colors = GetColor(data.PlayerHealth);
 	DrawProgressBar(data.PlayerHealth.CurrentHitPoint, data.PlayerHealth.DefaultHitPoint, data.PlayerHealth.Percentage, "Leon: ", _colors);
 	DrawTextBlocks(["Rank", "ActionPoint", "ItemPoint"], [data.Rank.Rank, data.Rank.ActionPoint, data.Rank.ItemPoint], ["white", "green2", "green2"], HideDA);
+	DrawTextBlock("Kills", data.GameStatsKillCountElement.Count, ["white", "green2"]);
 	var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive) });
 	filterdEnemies.sort(function (a, b) {
 		return Asc(a.CurrentHitPoint, b.CurrentHitPoint) || Desc(a.CurrentHitPoint, b.CurrentHitPoint);
