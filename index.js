@@ -502,7 +502,7 @@ function ResidentEvil2Remake(data)
 	filterdEnemies.sort(function (a, b) {
 		return Asc(a.CurrentHP, b.CurrentHP) || Desc(a.CurrentHP, b.CurrentHP);
 	}).forEach(function (item, index, arr) {
-		DrawProgressBar(item.CurrentHP, item.MaximumHP, item.Percentage, "", ["danger", "red"]);
+		DrawProgressBar(item.CurrentHP, item.MaxHP, item.Percentage, "", ["danger", "red"]);
 	});
 }
 
