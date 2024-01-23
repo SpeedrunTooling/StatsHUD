@@ -522,7 +522,7 @@ function ResidentEvil3Classic(data)
 // REMAKE
 function ResidentEvil3Remake(data)
 {
-	DrawTextBlock("IGT", data.IGTFormattedString, ["white", "green2"], HideIGT);
+	DrawTextBlock("IGT", data.Timer.IGTFormattedString, ["white", "green2"], HideIGT);
 	let _colors = GetColor(data.PlayerManager);
 	DrawProgressBar(data.PlayerManager.Health.CurrentHP, data.PlayerManager.Health.MaxHP, data.PlayerManager.Health.Percentage, data.PlayerManager.CurrentSurvivorString, _colors);
 	DrawTextBlocks(["Rank", "RankScore"], [data.RankManager.GameRank, data.RankManager.RankPoint], ["white", "green2"], HideDA);
