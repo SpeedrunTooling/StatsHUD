@@ -472,7 +472,7 @@ function ResidentEvil1Remake(data)
 	});
 }
 
-// RESIDENT EVIL 2
+// RESIDENT EVIL 2 
 // CLASSIC
 function ResidentEvil2Classic(data)
 {
