@@ -419,6 +419,7 @@ function EldenRing(data)
 	];
 	
 	let locationIndex = 0;
+	let counter = 0;
 	
 	// Assuming data.BossStatus is an object with keys and statuses
 	let entries = [];
@@ -430,6 +431,7 @@ function EldenRing(data)
 	
 			// Map the value to status and determine the color
 			if (value === 0 || value === 104) {
+				counter = counter +1;
 				status = "Alive";
 				statusColor = "green2";
 			} else {
@@ -490,7 +492,7 @@ function EldenRing(data)
 		let mainContainer = document.getElementById("srtQueryData");
 		mainContainer.innerHTML += `<div class="title" ${style}>${key}${colon} <span class="${statusColor}">${status}</span></div>`;
 	}
-
+	DrawTextBlock("Killed",167 - counter + " / 167" , ["white", "green2"], HideIGT);
 	DrawTextBlock("TV", data.VersionInfo, ["white", "green2"], IsDebug);
 	DrawTextBlock("GV", data.GameInfo, ["white", "green2"], IsDebug);
 }
