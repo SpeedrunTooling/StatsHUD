@@ -259,6 +259,9 @@ function appendData(data) {
 	mainContainer.innerHTML = "";
 	switch (data.GameName)
 	{
+		case "ED":
+			EldenRing(data);
+			return;
 		case "Dead Rising 1":
 			DeadRising1(data);
 			return;
@@ -382,6 +385,111 @@ function DevilMayCry4(data)
 	}).forEach(function (item, index, arr) {
 		DrawProgressBar(item.CurrentHP, item.MaximumHP, item.Percentage, "", ["danger", "red"]);
 	});
+
+	DrawTextBlock("TV", data.VersionInfo, ["white", "green2"], IsDebug);
+	DrawTextBlock("GV", data.GameInfo, ["white", "green2"], IsDebug);
+}
+
+// Elden Ring
+function EldenRing(data)
+{
+	
+	const locations = [
+		{ name: "Limgrave", position: 1 },
+		{ name: "Weeping Weeping Peninsula", position: 23 },
+		{ name: "Liurnia of the Lakes", position: 33 },
+		{ name: "Caelid", position: 61 },
+		{ name: "Dragonbarrow", position: 76 },
+		{ name: "Altus Plateau", position: 87 },
+		{ name: "Capital Outskirts", position: 107 },
+		{ name: "Leyendell, Royal Capital", position: 114 },
+		{ name: "Mt. Gelmir", position: 118 },
+		{ name: "Mountaintops of the Giants", position: 128 },
+		{ name: "Crumbling Farum Azula", position: 137 },
+		{ name: "Forbidden Lands", position: 140 },
+		{ name: "Consecrated Snowfields", position: 143 },
+		{ name: "Miquella's Haligtree", position: 150 },
+		{ name: "Siofra River", position: 152 },
+		{ name: "Ainsel River", position: 155 },
+		{ name: "Nokron Eternal City", position: 156 },
+		{ name: "Deeproot Depths", position: 159 },
+		{ name: "Lake of Rot", position: 162 },
+		{ name: "Leyendell, Ashen Capital", position: 164 },
+		{ name: "Elden Throne", position: 166 }
+	];
+	
+	let locationIndex = 0;
+	
+	// Assuming data.BossStatus is an object with keys and statuses
+	let entries = [];
+	for (let key in data.BossStatus) {
+		if (data.BossStatus.hasOwnProperty(key)) {
+			let value = data.BossStatus[key];
+			let status;
+			let statusColor;
+	
+			// Map the value to status and determine the color
+			if (value === 0 || value === 104) {
+				status = "Alive";
+				statusColor = "green2";
+			} else {
+				status = "Dead";
+				statusColor = "darkred";
+			}
+	
+			// Store the entry
+			entries.push({ key, status, statusColor });
+		}
+	}
+	
+	// Prepare a new list to include locations
+	let combinedEntries = [];
+	
+	// Add "Limgrave" before the first entry
+	if (locations.length > 0) {
+		combinedEntries.push({
+			key: "",
+			status: locations[0].name,
+			statusColor: "black", // Adjust color as needed
+			fontSize: '25px', // Larger font size for location names
+			isLocation: true // Mark as a location
+		});
+		locationIndex = 1; // Start with the second location in the list
+	}
+	
+	for (let i = 0; i < entries.length; i++) {
+		let currentEntry = entries[i];
+		
+		// Add the current entry to the combined list
+		combinedEntries.push(currentEntry);
+	
+		// Insert location names at specified positions
+		while (locationIndex < locations.length && i + 1 === locations[locationIndex].position) {
+			combinedEntries.push({
+				key: "",
+				status: locations[locationIndex].name,
+				statusColor: "black", // Adjust color as needed
+				fontSize: '25px', // Larger font size for location names
+				isLocation: true // Mark as a location
+			});
+			locationIndex++;
+		}
+	}
+	
+	// Draw the combined entries with locations
+	for (let entry of combinedEntries) {
+		const { key, status, statusColor, fontSize, isLocation } = entry;
+	
+		// Apply inline styles directly if fontSize is specified
+		const style = fontSize ? `style="font-size: ${fontSize};"` : "";
+		
+		// Only include ":" for regular entries, not for locations
+		const colon = isLocation ? "" : ":";
+	
+		// Add content to the main container directly
+		let mainContainer = document.getElementById("srtQueryData");
+		mainContainer.innerHTML += `<div class="title" ${style}>${key}${colon} <span class="${statusColor}">${status}</span></div>`;
+	}
 
 	DrawTextBlock("TV", data.VersionInfo, ["white", "green2"], IsDebug);
 	DrawTextBlock("GV", data.GameInfo, ["white", "green2"], IsDebug);
