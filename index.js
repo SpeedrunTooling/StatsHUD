@@ -395,6 +395,7 @@ function EldenRing(data)
 {
 	
 	const locations = [
+		//Main Game
 		{ name: "Limgrave", position: 1 },
 		{ name: "Weeping Weeping Peninsula", position: 23 },
 		{ name: "Liurnia of the Lakes", position: 33 },
@@ -415,7 +416,19 @@ function EldenRing(data)
 		{ name: "Deeproot Depths", position: 159 },
 		{ name: "Lake of Rot", position: 162 },
 		{ name: "Leyendell, Ashen Capital", position: 164 },
-		{ name: "Elden Throne", position: 166 }
+		{ name: "Elden Throne", position: 166 },
+		
+		//DLC
+		{ name: "Gravesite Plain", position: 167 },
+		{ name: "Abyssal Woods", position: 179 },
+		{ name: "Finger Ruins", position: 181 },
+		{ name: "Scadu Altus", position: 182 },
+		{ name: "Charo's Hidden Grave", position: 194 },
+		{ name: "Scaduview", position: 195 },
+		{ name: "Rauh Base", position: 197 },
+		{ name: "Jagged Peak", position: 199 },
+		{ name: "Enir Ilim", position: 203 }
+
 	];
 	
 	let locationIndex = 0;
