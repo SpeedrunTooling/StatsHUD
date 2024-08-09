@@ -433,6 +433,9 @@ function EldenRing(data)
 	
 	let locationIndex = 0;
 	let counter = 0;
+	let killed = 0;
+	let DLCKilled = 0;
+	const aliveDLC = [0, 64, 16384, 2049];
 	
 	// Assuming data.BossStatus is an object with keys and statuses
 	let entries = [];
@@ -441,16 +444,22 @@ function EldenRing(data)
 			let value = data.BossStatus[key];
 			let status;
 			let statusColor;
-	
+			counter = counter +1;
 			// Map the value to status and determine the color
-			if (value === 0 || value === 104) {
-				counter = counter +1;
+			if (value === 0 && counter <= 166|| value === 104 && counter <= 166) {
+				killed = killed + 1;
+				status = "Alive";
+				statusColor = "green2";
+			} else if(aliveDLC.includes(value) && counter >= 167) {
+				DLCKilled = DLCKilled + 1;
 				status = "Alive";
 				statusColor = "green2";
 			} else {
 				status = "Dead";
 				statusColor = "darkred";
 			}
+
+			
 	
 			// Store the entry
 			entries.push({ key, status, statusColor });
@@ -505,7 +514,8 @@ function EldenRing(data)
 		let mainContainer = document.getElementById("srtQueryData");
 		mainContainer.innerHTML += `<div class="title" ${style}>${key}${colon} <span class="${statusColor}">${status}</span></div>`;
 	}
-	DrawTextBlock("Killed",167 - counter + " / 167" , ["white", "green2"], HideIGT);
+	DrawTextBlock("Killed",167 -killed + " / 167" , ["white", "green2"], HideIGT);
+	DrawTextBlock("DLC Killed",37 - DLCKilled + " / 37" , ["white", "green2"], HideIGT);
 	DrawTextBlock("TV", data.VersionInfo, ["white", "green2"], IsDebug);
 	DrawTextBlock("GV", data.GameInfo, ["white", "green2"], IsDebug);
 }
