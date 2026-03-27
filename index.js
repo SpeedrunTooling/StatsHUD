@@ -680,6 +680,12 @@ function ResidentEvil4(data)
 	DrawTextBlock("Last Item", data.GamePlayerItemID.Name, ["white", "green2"], HideStats);
 	DrawTextBlock("Chapter Kills", data.GamePlayerKills.ChapterKills, ["white", "green2"], HideStats);
 	DrawTextBlock("Kills", data.GamePlayerKills.Kills, ["white", "green2"], HideStats);
+	var filterdEnemies = data.EnemyHealth.filter(m => { return (m.IsAlive) });
+	filterdEnemies.sort(function (a, b) {
+		return Asc(a.CurrentHP, b.CurrentHP) || Desc(a.CurrentHP, b.CurrentHP);
+	}).forEach(function (item, index, arr) {
+		DrawProgressBar(item.CurrentHP, item.MaximumHP, item.Percentage, "", ["danger", "red"]);
+	});
 }
 
 // REMAKE
