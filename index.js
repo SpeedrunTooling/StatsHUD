@@ -322,6 +322,9 @@ function appendData(data) {
 		case "REREV2":
 			ResidentEvilRevelations2(data);
 			return;
+		case "SH2C":
+			SilentHill2Classic(data);
+			return;
 		default:
 			mainContainer.innerHTML += "No Plugin Detected";
 			return;
@@ -934,4 +937,21 @@ function ResidentEvilRevelations2(data)
 
 	let _colors2 = GetColor(data.Player2);
 	DrawProgressBar(data.Player2.CurrentHP, data.Player2.MaxHP, data.Player2.Percentage, data.Player2Name, _colors2);
+}
+
+// SILENT HILL 2 CLASSIC
+function SilentHill2Classic(data) {
+	let _colors = GetColor(data.Player);
+	DrawTextBlock("IGT", data.IGTFormattedString, ["white", "green2"], HideIGT);
+	DrawTextBlock("James HP", `${data.Player.CurrentHP} (${data.Player.CurrentHealthState})`, _colors, false);
+	DrawTextBlocks(["Action", "Riddle"], [data.ActionDifficultyString, data.RiddleDifficultyString], ["white", "green2"], HideStats);
+	DrawTextBlocks(["Damage", "Shooting", "Fighting"], [data.DamageReceived, data.ShootingCount, data.FightingCount], ["white", "green2"], HideStats);
+	if (data.BoatTime > 0) {
+		DrawTextBlocks(["Saves", "Items", "Boat"], [data.SaveCount, data.ItemCount, data.BoatTimeFormatted], ["white", "green2"], HideStats);
+	} else {
+		DrawTextBlocks(["Saves", "Items"], [data.SaveCount, data.ItemCount], ["white", "green2"], HideStats);
+	}
+	DrawTextBlocks(["Handgun", "Bullets"], [data.HandgunCount, data.HandgunBullets], ["white", "green2"], false);
+	DrawTextBlocks(["Shotgun", "Bullets"], [data.ShotgunCount, data.ShotgunBullets], ["white", "green2"], false);
+	DrawTextBlocks(["Rifle", "Bullets"], [data.RifleCount, data.RifleBullets], ["white", "green2"], false);
 }
