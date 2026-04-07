@@ -325,6 +325,9 @@ function appendData(data) {
 		case "SH2C":
 			SilentHill2Classic(data);
 			return;
+		case "SH2R":
+			SilentHill2Remake(data);
+			return;
 		default:
 			mainContainer.innerHTML += "No Plugin Detected";
 			return;
@@ -954,4 +957,15 @@ function SilentHill2Classic(data) {
 	DrawTextBlocks(["Handgun", "Bullets"], [data.HandgunCount, data.HandgunBullets], ["white", "green2"], false);
 	DrawTextBlocks(["Shotgun", "Bullets"], [data.ShotgunCount, data.ShotgunBullets], ["white", "green2"], false);
 	DrawTextBlocks(["Rifle", "Bullets"], [data.RifleCount, data.RifleBullets], ["white", "green2"], false);
+}
+
+// SILENT HILL 2 REMAKE
+function SilentHill2Remake(data) {
+	DrawTextBlock("James HP", data.PlayerHP, ["white", "green2"], false);
+	var aliveEnemies = data.EnemyHP.filter(e => e.IsAlive && e.IsValid);
+	aliveEnemies.sort(function(a, b) {
+		return Asc(a.HP, b.HP);
+	}).forEach(function(enemy) {
+		DrawTextBlock("Enemy HP", enemy.HP, ["white", "red"], false);
+	});
 }
