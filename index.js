@@ -316,6 +316,9 @@ function appendData(data) {
 		case "RE8":
 			ResidentEvil8(data);
 			return;
+		case "RE9":
+			ResidentEvil9(data);
+			return;
 		case "REREV1":
 			ResidentEvilRevelations1(data);
 			return;
@@ -897,6 +900,20 @@ function ResidentEvil8(data)
 		return Asc(a.CurrentHP, b.CurrentHP) || Desc(a.CurrentHP, b.CurrentHP);
 	}).forEach(function (item, index, arr) {
 		DrawProgressBar(item.CurrentHP, item.MaximumHP, item.Percentage, "", ["danger", "red"]);
+	});
+}
+
+// RESIDENT EVIL 9: REQUIEM
+function ResidentEvil9(data) {
+	DrawTextBlocks(["HP", "Max HP"], [data.PlayerContext.HP.CurrentHP, data.PlayerContext.HP.CurrentMaxHP], ["white", "green2"], false);
+	DrawTextBlocks(["DA Rank", "DA Score"], [data.DARank, data.DAScore], ["white", "green2"], HideStats);
+	var aliveEnemies = data.EnemyContexts.filter(function(e) {
+		return e.HP.CurrentHP > 0 && e.HP.CurrentMaxHP > 1;
+	});
+	aliveEnemies.sort(function(a, b) {
+		return Asc(a.HP.CurrentHP, b.HP.CurrentHP);
+	}).forEach(function(enemy) {
+		DrawTextBlocks(["HP", "Max HP"], [enemy.HP.CurrentHP, enemy.HP.CurrentMaxHP], ["white", "red"], false);
 	});
 }
 
