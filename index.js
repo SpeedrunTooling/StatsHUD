@@ -940,18 +940,20 @@ function ResidentEvilRevelations2(data)
 }
 
 // SILENT HILL 2 CLASSIC
+// SILENT HILL 2 CLASSIC
 function SilentHill2Classic(data) {
 	let _colors = GetColor(data.Player);
-	DrawTextBlock("IGT", data.IGTFormattedString, ["white", "green2"], HideIGT);
-	DrawTextBlock("James HP", `${data.Player.CurrentHP} (${data.Player.CurrentHealthState})`, _colors, false);
+	let playerLabel = data.IsBfaW ? "Maria HP" : "James HP";
+	DrawTextBlocks(["IGT", "FPS"], [data.IGTFormattedString, Math.round(data.FPS)], ["white", "green2"], HideIGT);
+	DrawTextBlock(playerLabel, `${data.Player.CurrentHP} (${data.Player.CurrentHealthState})`, _colors, false);
 	DrawTextBlocks(["Action", "Riddle"], [data.ActionDifficultyString, data.RiddleDifficultyString], ["white", "green2"], HideStats);
 	DrawTextBlocks(["Damage", "Shooting", "Fighting"], [data.DamageReceived, data.ShootingCount, data.FightingCount], ["white", "green2"], HideStats);
-	if (data.BoatTime > 0) {
-		DrawTextBlocks(["Saves", "Items", "Boat"], [data.SaveCount, data.ItemCount, data.BoatTimeFormatted], ["white", "green2"], HideStats);
+	DrawTextBlocks(["Saves", "Items"], [data.SaveCount, data.ItemCount], ["white", "green2"], HideStats);
+	if (data.IsBfaW) {
+		DrawTextBlock("Revolver", data.HandgunCount, ["white", "green2"], false);
 	} else {
-		DrawTextBlocks(["Saves", "Items"], [data.SaveCount, data.ItemCount], ["white", "green2"], HideStats);
+		DrawTextBlocks(["Handgun", "Bullets"], [data.HandgunCount, data.HandgunBullets], ["white", "green2"], false);
+		DrawTextBlocks(["Shotgun", "Bullets"], [data.ShotgunCount, data.ShotgunBullets], ["white", "green2"], false);
+		DrawTextBlocks(["Rifle", "Bullets"], [data.RifleCount, data.RifleBullets], ["white", "green2"], false);
 	}
-	DrawTextBlocks(["Handgun", "Bullets"], [data.HandgunCount, data.HandgunBullets], ["white", "green2"], false);
-	DrawTextBlocks(["Shotgun", "Bullets"], [data.ShotgunCount, data.ShotgunBullets], ["white", "green2"], false);
-	DrawTextBlocks(["Rifle", "Bullets"], [data.RifleCount, data.RifleBullets], ["white", "green2"], false);
 }
