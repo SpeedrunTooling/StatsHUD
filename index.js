@@ -325,6 +325,9 @@ function appendData(data) {
 		case "REREV2":
 			ResidentEvilRevelations2(data);
 			return;
+		case "SH1":
+			SilentHill(data);
+			return;
 		case "SH2C":
 			SilentHill2Classic(data);
 			return;
@@ -957,6 +960,17 @@ function ResidentEvilRevelations2(data)
 
 	let _colors2 = GetColor(data.Player2);
 	DrawProgressBar(data.Player2.CurrentHP, data.Player2.MaxHP, data.Player2.Percentage, data.Player2Name, _colors2);
+}
+
+// SILENT HILL 1 CLASSIC
+function SilentHill1(data) {
+	const harryState = { CurrentHealthState: data.HarryHealthStatusName };
+	let _colors = GetColor(harryState);
+	DrawTextBlock("IGT", data.IGTFormattedString, ["white", "green2"], HideIGT);
+	DrawProgressBar(data.HarryHP, 100, data.HarryHP / 100, "Harry: ", _colors);
+	DrawTextBlock("Status", data.HarryHealthStatusName, ["white", _colors[1]], false);
+	DrawTextBlock("Saves", data.SaveCount, ["white", "green2"], HideStats);
+	DrawTextBlock("TV", data.VersionInfo, ["white", "green2"], !IsDebug);
 }
 
 // SILENT HILL 2 CLASSIC
