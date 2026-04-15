@@ -326,7 +326,7 @@ function appendData(data) {
 			ResidentEvilRevelations2(data);
 			return;
 		case "SH1":
-			SilentHill(data);
+			SilentHill1(data);
 			return;
 		case "SH2C":
 			SilentHill2Classic(data);
