@@ -629,7 +629,7 @@ function ResidentEvil2Classic(data)
 		return Asc(a.CurrentHP, b.CurrentHP) || Desc(a.CurrentHP, b.CurrentHP);
 	}).forEach(function (item, index, arr) {
 		if (item.MaximumHP != 0)
-			DrawProgressBar(item.CurrentHP, item.MaximumHP, item.Percentage, "", ["danger", "red"]);
+			DrawProgressBar(item.CurrentHP, item.MaximumHP, item.Percentage, item.EnemyTypeString, ["danger", "red"]);
 		else
 			DrawTextBlock("Enemy", item.CurrentHP, ["white", "red"], false);
 	});
