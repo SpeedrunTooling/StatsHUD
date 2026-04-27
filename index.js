@@ -334,6 +334,9 @@ function appendData(data) {
 		case "SH2R":
 			SilentHill2Remake(data);
 			return;
+		case "SH3C":
+            SilentHill3Classic(data);
+            return;
 		default:
 			mainContainer.innerHTML += "No Plugin Detected";
 			return;
@@ -974,7 +977,6 @@ function SilentHill1(data) {
 }
 
 // SILENT HILL 2 CLASSIC
-// SILENT HILL 2 CLASSIC
 function SilentHill2Classic(data) {
 	let _colors = GetColor(data.Player);
 	let playerLabel = data.IsBfaW ? "Maria HP" : "James HP";
@@ -1001,4 +1003,22 @@ function SilentHill2Remake(data) {
 	}).forEach(function(enemy) {
 		DrawTextBlock("Enemy HP", enemy.HP, ["white", "red"], false);
 	});
+}
+
+// SILENT HILL 3 CLASSIC
+function SilentHill3Classic(data) {
+    let _colors = GetColor(data.Player);
+    DrawTextBlock("IGT", data.IGTFormattedString, ["white", "green2"], HideIGT);
+    DrawTextBlock("Heather", `${data.Player.CurrentHP.toFixed(0)} (${data.Player.CurrentHealthState})`, _colors, false);
+    DrawTextBlocks(["Action", "Riddle"], [data.ActionDifficultyString, data.RiddleDifficultyString], ["white", "green2"], HideStats);
+    DrawTextBlocks(["Damage", "Shooting", "Melee"], [Math.round(data.DamageTaken), data.ShootingKills, data.MeleeKills], ["white", "green2"], HideStats);
+    DrawTextBlocks(["Saves", "Items"], [data.SaveCount, data.ItemCount], ["white", "green2"], HideStats);
+    DrawTextBlocks(["Handgun", "Shotgun", "SMG"], [data.HandgunCount, data.ShotgunCount, data.MachineGunCount], ["white", "green2"], false);
+    DrawTextBlock("Beef Jerky", data.BeefJerky, ["white", "green2"], false);
+    DrawTextBlock("Split Worm", data.WormTimeFormatted, ["white", "green2"], HideStats);
+    DrawTextBlock("Missionary", data.MissionaryTimeFormatted, ["white", "green2"], HideStats);
+    DrawTextBlock("Leonard", data.LeonardTimeFormatted, ["white", "green2"], HideStats);
+    DrawTextBlock("Memory of Alessa", data.AlessaTimeFormatted, ["white", "green2"], HideStats);
+    DrawTextBlock("God", data.GodTimeFormatted, ["white", "green2"], HideStats);
+    DrawTextBlock("TV", data.VersionInfo, ["white", "green2"], !IsDebug);
 }
