@@ -531,6 +531,7 @@ function EldenRing(data)
 	}
 	DrawTextBlock("Killed",167 -killed + " / 167" , ["white", "green2"], HideIGT);
 	DrawTextBlock("DLC Killed",37 - DLCKilled + " / 37" , ["white", "green2"], HideIGT);
+	DrawTextBlock("Death Count", data.DeathCount, ["white", "green2", HideIGT);
 	DrawTextBlock("TV", data.VersionInfo, ["white", "green2"], IsDebug);
 	DrawTextBlock("GV", data.GameInfo, ["white", "green2"], IsDebug);
 }
